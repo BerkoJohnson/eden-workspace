@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "name": "voting-app",
+  "builds": [
+    { "src": "/dist/apps/api/main.js", "use": "@now/node" },
+    { "src": "/dist/apps/voting-app/*", "use": "@now/static" }
+  ],
+  "routes": [
+    { "src": "/api/(.*)", "dest": "/dist/apps/api/main.js" },
+    { "handle": "filesystem" },
+    { "src": "/assets/(.*)", "dest": "/dist/apps/voting-app/assets/$1"},
+    { "src": "/(.*).(js|css|ico)", "dest": "/dist/apps/voting-app/$1.$2" },
+    { "src": "/(.*)", "dest": "/dist/apps/voting-app/index.html" }
+  ]
+}

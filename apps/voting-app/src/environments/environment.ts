@@ -4,6 +4,8 @@
 
 export const environment = {
   production: false,
+  jwt_secret: 'alfjldkajl1324~!!@#',
+  apiUrl: 'http://localhost:3333',
 };
 
 /*

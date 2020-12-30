@@ -1,15 +1,6 @@
-import { Controller, Get } from '@nestjs/common';
-
-import { Message } from '@eden-workspace/api-interfaces';
-
-import { AppService } from './app.service';
-
+import { Controller } from '@nestjs/common';
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
-
-  @Get('hello')
-  getData(): Message {
-    return this.appService.getData();
-  }
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  constructor() {}
 }

@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { shareReplay, tap } from 'rxjs/operators';
 import { LoginModel } from '../../models/Login';
+import { ROLES } from '../../models/roles.enum';
 
 export interface LoginPayload {
   accessToken: string;
@@ -11,7 +12,7 @@ export interface LoginPayload {
 
 export interface Token {
   email: string;
-  role: string;
+  role: ROLES;
   iat: number;
   exp: number;
 }
@@ -29,6 +30,10 @@ export class AuthService {
     );
   }
 
+  get user(): {email: string; role: string} {
+    return this.validateUser();
+  }
+
   get token(): string {
     return localStorage.getItem('vta-access-token')
   }
@@ -44,7 +49,7 @@ export class AuthService {
   }
 
   /** Checks if token exists, if not return null. if it exists return {email: string, role: string} */
-  validateUser() {
+  validateUser(): {email: string, role: ROLES} {
 
     // if token is null;
     if (!this.decodeToken()) {
@@ -74,5 +79,14 @@ export class AuthService {
 
   private timeNow() {
     return Math.floor(Date.now() / 1000);
+  }
+
+
+  logout(): Observable<boolean> {
+    localStorage.removeItem('vta-access-token');
+    localStorage.removeItem('vta-access-token-expires');
+
+    return of(true);
+
   }
 }

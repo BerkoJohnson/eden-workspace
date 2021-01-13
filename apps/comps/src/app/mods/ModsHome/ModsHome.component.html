@@ -1,0 +1,20 @@
+<eden-workspace-divider>Modal Component</eden-workspace-divider>
+<button class="ui button" (click)="showModal()">Show Modal</button>
+<eden-workspace-modal (closeModal)="showModal()" *ngIf="modalOpen">
+  <div modalTitle>
+    I am reusable modal title
+  </div>
+
+  <p>
+    Lorem, ipsum dolor.
+  </p>
+  <ng-container modalFooter>
+    <button class="ui secondary button" (click)="showModal()">Close!</button>
+  </ng-container>
+</eden-workspace-modal>
+
+<eden-workspace-divider>
+  Accordion Component
+</eden-workspace-divider>
+
+<eden-workspace-accordion [items]="items"></eden-workspace-accordion>

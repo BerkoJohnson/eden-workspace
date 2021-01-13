@@ -13,11 +13,18 @@ import { FullwidthComponent } from './comps/fullwidth/fullwidth/fullwidth.compon
       {
         path: '',
         component: DefaultComponent,
-        data: {requiresLogIn: true},
+        data: { requiresLogIn: true },
         canActivate: [LoginGuard],
         children: [
-          { path: '', component: DashboardComponent },
-          { path: 'users', loadChildren: () => import('./comps/users/users.module').then(mod => mod.UsersModule) },
+          { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+          {
+            path: 'users',
+            loadChildren: () =>
+              import('./comps/settings/settings.module').then(
+                (mod) => mod.SettingsModule
+              ),
+          },
+          { path: 'dashboard', component: DashboardComponent },
         ],
       },
       {

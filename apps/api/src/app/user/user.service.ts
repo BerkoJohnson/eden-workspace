@@ -47,7 +47,7 @@ export class UserService {
   }
 
   async list(): Promise<UserDocument[]> {
-    return await this.userModel.find();
+    return await this.userModel.find().select('-password -salt');
   }
 
   async hashPw(password: string, salt: string): Promise<string> {
@@ -55,3 +55,4 @@ export class UserService {
   }
 
 }
+

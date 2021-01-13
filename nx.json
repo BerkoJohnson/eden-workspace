@@ -45,6 +45,65 @@
     "pw-e2e": {
       "tags": [],
       "implicitDependencies": ["pw"]
+    },
+    "card": {
+      "tags": []
+    },
+    "card-e2e": {
+      "tags": [],
+      "implicitDependencies": ["card"]
+    },
+    "typing": {
+      "tags": []
+    },
+    "typing-e2e": {
+      "tags": [],
+      "implicitDependencies": ["typing"]
+    },
+    "pipes": {
+      "tags": []
+    },
+    "pipes-e2e": {
+      "tags": [],
+      "implicitDependencies": ["pipes"]
+    },
+    "pages": {
+      "tags": []
+    },
+    "pages-e2e": {
+      "tags": [],
+      "implicitDependencies": ["pages"]
+    },
+    "comps": {
+      "tags": []
+    },
+    "comps-e2e": {
+      "tags": [],
+      "implicitDependencies": ["comps"]
+    },
+    "shared": {
+      "tags": []
+    },
+    "grid-things": {
+      "tags": []
+    },
+    "grid-things-e2e": {
+      "tags": [],
+      "implicitDependencies": ["grid-things"]
+    },
+    "wsearch": {
+      "tags": []
+    },
+    "wsearch-e2e": {
+      "tags": [],
+      "implicitDependencies": ["wsearch"]
+    },
+    "material-test-app": {
+      "tags": []
+    },
+    "material-test-app-e2e": {
+      "tags": [],
+      "implicitDependencies": ["material-test-app"]
     }
   }
 }

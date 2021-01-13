@@ -55,7 +55,8 @@ export class LoginComponent implements OnInit {
     console.log(this.returnUrl)
     this.authService.login(this.form.value).subscribe({
       next: () => {
-        this.router.navigate([this.returnUrl]);
+        console.log(this.returnUrl)
+        this.router.navigate([this.returnUrl || '/dashboard']);
       },
       error: (error) => {
         console.error(error);

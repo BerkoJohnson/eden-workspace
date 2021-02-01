@@ -37,6 +37,8 @@ export class AuthService {
       // return jwt token to front-end
 
       const accessToken = await this.jwtService.sign({
+        firstName: found.firstName,
+        lastName: found.lastName,
         email: found.email,
         role: found.role,
       });

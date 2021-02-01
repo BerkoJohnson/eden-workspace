@@ -1,0 +1,39 @@
+<evc-page-header>
+  <div pageTitle>Elections</div>
+
+  <div buttonsGroup>
+    <div class="btn-group me-2">
+      <a routerLink="/elections/new" class="btn btn-sm btn-outline-primary"
+        >New Election</a
+      >
+    </div>
+    <div class="btn-group">
+      <button
+        type="button"
+        class="btn btn-sm btn-outline-info dropdown-toggle"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        Menu
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end">
+        <li><a class="dropdown-item" href="#">Action</a></li>
+        <li><a class="dropdown-item" href="#">Another action</a></li>
+        <li><a class="dropdown-item" href="#">Something else here</a></li>
+        <li><hr class="dropdown-divider" /></li>
+        <li><a class="dropdown-item" href="#">Separated link</a></li>
+      </ul>
+    </div>
+  </div>
+</evc-page-header>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-8">
+      <evc-list-elections></evc-list-elections>
+    </div>
+    <div class="col-sm-4">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

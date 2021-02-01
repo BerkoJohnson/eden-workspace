@@ -19,17 +19,11 @@ const routes: Routes = [
         data: { roles: [ROLES.SUPERADMIN, ROLES.ADMIN], redirectUrl: 'users' },
         canActivate: [RoleAccessGuard],
       },
-      {
-        path: 'new-user',
-        component: NewUserComponent,
-        data: { roles: [ROLES.SUPERADMIN, ROLES.ADMIN], redirectUrl: 'users' },
-        canActivate: [RoleAccessGuard],
-      },
-      {
-        path: '',
-        redirectTo: 'my-profile',
-        pathMatch: 'full',
-      },
+      // {
+      //   path: '',
+      //   redirectTo: 'lists',
+      //   pathMatch: 'full',
+      // },
     ],
   },
 ];

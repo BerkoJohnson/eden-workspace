@@ -12,5 +12,7 @@ module.exports = {
     '<rootDir>/apps/grid-things',
     '<rootDir>/apps/wsearch',
     '<rootDir>/apps/material-test-app',
+    '<rootDir>/apps/eden-dashboard-app',
+    '<rootDir>/apps/eden-vote-cast',
   ],
 };

@@ -1,0 +1,112 @@
+<div class="d-flex flex-column justify-content-center align-items-center">
+  <form
+    [formGroup]="form"
+    class="card"
+    style="width: 300px"
+    (ngSubmit)="createElection()"
+  >
+    <div class="card-header">
+      <h6 class="card-title">Creating New Election</h6>
+    </div>
+    <div class="card-body d-flex flex-column">
+      <!-- <div
+      class="alert alert-danger"
+      role="alert"
+      *ngIf="form.invalid  && submitted && form.hasError('userExists')"
+    >
+      <h6 class="alert-heading">User Exists!</h6>
+      <p>This user is already saved!</p>
+    </div> -->
+      <!-- <div
+      class="alert alert-success"
+      role="alert"
+      *ngIf="submitted && alertSuccess"
+    >
+      <h6 class="alert-heading">User Saved!</h6>
+      <p>The user is successfully saved!</p>
+    </div> -->
+
+      <div class="mb-3">
+        <div class="form-floating">
+          <input
+            type="text"
+            class="form-control"
+            name="title"
+            id="title"
+            placeholder="Title"
+            formControlName="title"
+            [ngClass]="{
+              'is-invalid':
+                submitted &&
+                f['title'].invalid &&
+                (f['title'].dirty || f['title'].touched)
+            }"
+          />
+          <label for="title">Title</label>
+        </div>
+      </div>
+      <div class="mb-3">
+        <div class="form-floating">
+          <input
+            type="text"
+            class="form-control"
+            name="academicYear"
+            id="academicYear"
+            placeholder="Academic Year"
+            formControlName="academicYear"
+            [ngClass]="{
+              'is-invalid':
+                f['academicYear'].invalid &&
+                (f['academicYear'].dirty || f['academicYear'].touched)
+            }"
+          />
+          <label for="academicYear">Academic Year</label>
+        </div>
+      </div>
+
+      <button type="button" class="btn btn-secondary" (click)="addPosition()">
+        + Add Position
+      </button>
+      <ng-container
+        *ngFor="let posGroup of positionsArray.controls; let i = index"
+      >
+        <div [formGroup]="posGroup">
+          <div class="input-group mt-2">
+            <span class="input-group-text">{{ i + 1 }}</span>
+            <input
+              type="text"
+              class="form-control"
+              name="pos_name"
+              id="pos_name"
+              placeholder="Name of Position"
+              formControlName="pos_name"
+              [ngClass]="{
+                'is-invalid':
+                  submitted &&
+                  posGroup.get('pos_name').invalid &&
+                  (posGroup.get('pos_name').dirty ||
+                    posGroup.get('pos_name').touched)
+              }"
+            />
+            <button
+              class="btn btn-outline-danger"
+              type="button"
+              (click)="removePosition(i)"
+            >
+              x
+            </button>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+
+    <div class="card-footer d-flex justify-content-between">
+      <button class="btn btn-sm btn-outline-danger" type="button" (click)="resetForm()">
+        Clear Form
+      </button>
+      <button class="btn btn-sm btn-outline-primary" type="submit" [disabled]="form.invalid">
+        Save User
+      </button>
+    </div>
+  </form>
+</div>

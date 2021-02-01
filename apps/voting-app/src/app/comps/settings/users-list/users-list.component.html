@@ -1,7 +1,26 @@
-<div [ngClass]="{ loading: !data }">
-  <eden-workspace-table
-    classNames="ui selectable stripped celled table"
-    [data]="data"
-    [headers]="headers"
-  ></eden-workspace-table>
+<div>
+  <mat-form-field>
+    <input
+      (keyup)="applyFilter($event.target.value)"
+      matInput
+      placeholder="Filter"
+    />
+  </mat-form-field>
+  <mat-table [dataSource]="dataSource" matSort>
+    <ng-container [matColumnDef]="header.key" *ngFor="let header of headers">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>
+        {{ header?.label }}</mat-header-cell
+      >
+      <mat-cell *matCellDef="let element">
+        {{
+          header?.key === 'createdAt' || header?.key === 'updatedAt'
+            ? (element[header?.key] | date: "MMM L, Y hh:m:s")
+            : element[header?.key]
+        }}
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+  </mat-table>
 </div>

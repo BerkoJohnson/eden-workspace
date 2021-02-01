@@ -1,0 +1,47 @@
+<header class="navbar navbar-dark bg-dark flex-md-nowrap p-0 shadow">
+  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" routerLink="/">
+    <img src="/assets/fav/favicon.png" alt="Logo" height="32" width="32" />
+    Eden Cast
+  </a>
+  <button
+    class="navbar-toggler position-absolute d-md-none collapsed"
+    type="button"
+    data-bs-toggle="collapse"
+    data-bs-target="#sidebarMenu"
+    aria-controls="sidebarMenu"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+  >
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <input
+    class="form-control form-control-dark w-100"
+    type="text"
+    placeholder="Search"
+    aria-label="Search"
+  />
+
+  <div class="btn-group">
+    <div class="dropdown">
+      <button
+        class="btn btn-dark dropdown-toggle"
+        id="dropdownMenuBtn"
+        data-bs-toggle="dropdown"
+      >
+        {{ loggedInUser?.lastName }}, {{ loggedInUser?.firstName }}
+      </button>
+
+      <ul
+        class="dropdown-menu dropdown-menu-end"
+        aria-labelledby="dropdownMenuBtn"
+      >
+        <li>
+          <a class="dropdown-item" routerLink="/my-profile">My Profile</a>
+        </li>
+        <li class="dropdown-item">Update Profile</li>
+        <li><hr class="dropdown-divider" /></li>
+        <li class="dropdown-item" (click)="logout()">Sign Out</li>
+      </ul>
+    </div>
+  </div>
+</header>

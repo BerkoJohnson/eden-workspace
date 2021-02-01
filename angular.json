@@ -21,7 +21,7 @@
               "apps/voting-app/src/assets"
             ],
             "styles": ["apps/voting-app/src/styles.scss"],
-            "scripts": ["/node_modules/semantic-ui-css/semantic.js"]
+            "scripts": []
           },
           "configurations": {
             "production": {
@@ -1202,6 +1202,242 @@
           "builder": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["apps/material-test-app-e2e/**/*.{js,ts}"]
+          }
+        }
+      }
+    },
+    "eden-dashboard-app": {
+      "projectType": "application",
+      "root": "apps/eden-dashboard-app",
+      "sourceRoot": "apps/eden-dashboard-app/src",
+      "prefix": "eda",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/apps/eden-dashboard-app",
+            "index": "apps/eden-dashboard-app/src/index.html",
+            "main": "apps/eden-dashboard-app/src/main.ts",
+            "polyfills": "apps/eden-dashboard-app/src/polyfills.ts",
+            "tsConfig": "apps/eden-dashboard-app/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "apps/eden-dashboard-app/src/favicon.ico",
+              "apps/eden-dashboard-app/src/assets"
+            ],
+            "styles": ["apps/eden-dashboard-app/src/styles.scss"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/eden-dashboard-app/src/environments/environment.ts",
+                  "with": "apps/eden-dashboard-app/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "eden-dashboard-app:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "eden-dashboard-app:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "eden-dashboard-app:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/eden-dashboard-app/src/**/*.ts",
+              "apps/eden-dashboard-app/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/eden-dashboard-app"],
+          "options": {
+            "jestConfig": "apps/eden-dashboard-app/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "eden-dashboard-app-e2e": {
+      "root": "apps/eden-dashboard-app-e2e",
+      "sourceRoot": "apps/eden-dashboard-app-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/eden-dashboard-app-e2e/cypress.json",
+            "tsConfig": "apps/eden-dashboard-app-e2e/tsconfig.e2e.json",
+            "devServerTarget": "eden-dashboard-app:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "eden-dashboard-app:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/eden-dashboard-app-e2e/**/*.{js,ts}"]
+          }
+        }
+      }
+    },
+    "eden-vote-cast": {
+      "projectType": "application",
+      "root": "apps/eden-vote-cast",
+      "sourceRoot": "apps/eden-vote-cast/src",
+      "prefix": "evc",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/apps/eden-vote-cast",
+            "index": "apps/eden-vote-cast/src/index.html",
+            "main": "apps/eden-vote-cast/src/main.ts",
+            "polyfills": "apps/eden-vote-cast/src/polyfills.ts",
+            "tsConfig": "apps/eden-vote-cast/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "apps/eden-vote-cast/src/favicon.ico",
+              "apps/eden-vote-cast/src/assets"
+            ],
+            "styles": ["apps/eden-vote-cast/src/styles.scss"],
+            "scripts": [
+              {
+                "input": "node_modules/bootstrap/dist/js/bootstrap.bundle.js",
+                "inject": false,
+                "bundleName": "bootstrap"
+               },
+               "node_modules/popper.js/dist/popper.min.js"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/eden-vote-cast/src/environments/environment.ts",
+                  "with": "apps/eden-vote-cast/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "eden-vote-cast:build",
+            "proxyConfig": "apps/eden-vote-cast/proxy.conf.json"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "eden-vote-cast:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "eden-vote-cast:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/eden-vote-cast/src/**/*.ts",
+              "apps/eden-vote-cast/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/eden-vote-cast"],
+          "options": {
+            "jestConfig": "apps/eden-vote-cast/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "eden-vote-cast-e2e": {
+      "root": "apps/eden-vote-cast-e2e",
+      "sourceRoot": "apps/eden-vote-cast-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/eden-vote-cast-e2e/cypress.json",
+            "tsConfig": "apps/eden-vote-cast-e2e/tsconfig.e2e.json",
+            "devServerTarget": "eden-vote-cast:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "eden-vote-cast:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/eden-vote-cast-e2e/**/*.{js,ts}"]
           }
         }
       }

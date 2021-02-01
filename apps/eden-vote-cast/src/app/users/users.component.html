@@ -1,0 +1,25 @@
+<evc-page-header>
+  <div pageTitle>
+    Users
+  </div>
+
+  <div buttonsGroup>
+    <div class="btn-group me-2">
+      <a routerLink="/users/new" class="btn btn-sm btn-primary">New User</a>
+    </div>
+    <div class="btn-group">
+      <button type="button" class="btn btn-sm btn-info dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+        Menu
+      </button>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="#">Action</a></li>
+        <li><a class="dropdown-item" href="#">Another action</a></li>
+        <li><a class="dropdown-item" href="#">Something else here</a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item" href="#">Separated link</a></li>
+      </ul>
+    </div>
+  </div>
+</evc-page-header>
+
+<router-outlet></router-outlet>

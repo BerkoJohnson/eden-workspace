@@ -6,6 +6,7 @@ import { AuthModule } from './auth/auth.module';
 
 import { environment } from '../environments/environment';
 import { UserModule } from './user/user.module';
+import { ElectionModule } from './election/election.module';
 @Module({
   imports: [
     MongooseModule.forRoot(environment.mongodb_uri, {
@@ -15,6 +16,7 @@ import { UserModule } from './user/user.module';
     }),
     AuthModule,
     UserModule,
+    ElectionModule,
   ],
   controllers: [AppController],
   providers: [],

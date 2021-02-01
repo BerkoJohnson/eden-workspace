@@ -104,6 +104,20 @@
     "material-test-app-e2e": {
       "tags": [],
       "implicitDependencies": ["material-test-app"]
+    },
+    "eden-dashboard-app": {
+      "tags": []
+    },
+    "eden-dashboard-app-e2e": {
+      "tags": [],
+      "implicitDependencies": ["eden-dashboard-app"]
+    },
+    "eden-vote-cast": {
+      "tags": []
+    },
+    "eden-vote-cast-e2e": {
+      "tags": [],
+      "implicitDependencies": ["eden-vote-cast"]
     }
   }
 }

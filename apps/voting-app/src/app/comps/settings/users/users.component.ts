@@ -3,7 +3,7 @@ import { AuthService } from '../../auth/auth.service';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
-  selector: 'app-users',
+  selector: 'vt-users',
   templateUrl: './users.component.html',
 })
 export class UsersComponent implements OnInit {

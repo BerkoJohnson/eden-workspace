@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Message } from '@eden-workspace/api-interfaces';
 
 @Component({
-  selector: 'eden-workspace-root',
+  selector: 'vt-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })

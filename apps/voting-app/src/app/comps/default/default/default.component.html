@@ -1,23 +1,10 @@
-<div class="ui container">
-  <div class="ui menu">
-    <a class="header item" routerLink="/dashboard"> EdenCast </a>
-    <a class="item" routerLinkActive="active" routerLink="/dashboard">
-      <i class="home icon"></i>
-      Dashboard
-    </a>
+<vt-header [deviceXs]="deviceXs" (loggedOut)="logout()"></vt-header>
 
-    <div class="right menu">
-      <a class="item" routerLinkActive="active" routerLink="users">
-        <i class="settings icon"></i>
-        Settings
-      </a>
-      <a class="item" (click)="logout()">
-        <i class="sign-out icon"></i>
-        Logout
-      </a>
-    </div>
-  </div>
-  <div class="ui segment">
+<!-- <mat-sidenav-container>
+  <mat-sidenav mode="push" opened>
+
+  </mat-sidenav>
+  <mat-sidenav-content> -->
     <router-outlet></router-outlet>
-  </div>
-</div>
+  <!-- </mat-sidenav-content>
+</mat-sidenav-container> -->

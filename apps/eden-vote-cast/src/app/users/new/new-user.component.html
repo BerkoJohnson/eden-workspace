@@ -1,0 +1,210 @@
+<form
+  [formGroup]="form"
+  class="card"
+  style="width: 300px"
+  (ngSubmit)="addUser()"
+>
+  <div class="card-header">
+    <h6 class="card-title">Adding New User</h6>
+  </div>
+  <div class="card-body d-flex flex-column">
+    <div
+      class="alert alert-danger"
+      role="alert"
+      *ngIf="form.invalid  && submitted && form.hasError('userExists')"
+    >
+      <h6 class="alert-heading">User Exists!</h6>
+      <p>This user is already saved!</p>
+    </div>
+    <div
+      class="alert alert-success"
+      role="alert"
+      *ngIf="submitted && alertSuccess"
+    >
+      <h6 class="alert-heading">User Saved!</h6>
+      <p>The user is successfully saved!</p>
+    </div>
+
+    <div class="mb-3">
+      <div class="form-floating">
+        <input
+          type="text"
+          class="form-control"
+          name="firstName"
+          id="firstName"
+          placeholder="First Name"
+          formControlName="firstName"
+          [ngClass]="{
+            'is-invalid':
+              submitted &&
+              f['firstName'].invalid &&
+              (f['firstName'].dirty || f['firstName'].touched)
+          }"
+        />
+        <label for="firstName">First Name</label>
+      </div>
+    </div>
+    <div class="mb-3">
+      <div class="form-floating">
+        <input
+          type="text"
+          class="form-control"
+          name="lastName"
+          id="lastName"
+          placeholder="Last Name"
+          formControlName="lastName"
+          [ngClass]="{
+            'is-invalid':
+              submitted &&
+              f['lastName'].invalid &&
+              (f['lastName'].dirty || f['lastName'].touched)
+          }"
+        />
+        <label for="lastName">Last Name</label>
+      </div>
+    </div>
+    <div class="mb-3">
+      <div class="form-floating">
+        <input
+          type="email"
+          class="form-control"
+          name="email"
+          id="email"
+          placeholder="Email Address"
+          formControlName="email"
+          [ngClass]="{
+            'is-invalid':
+              submitted &&
+              f['email'].invalid &&
+              (f['email'].dirty || f['email'].touched)
+          }"
+        />
+        <label for="email">Email Address</label>
+      </div>
+      <div
+        *ngIf="
+          submitted &&
+          f['email'].invalid &&
+          (f['email'].dirty || f['email'].touched)
+        "
+      >
+        <div
+          class="invalid-feedback"
+          [class.show]="f['email'].hasError('required')"
+        >
+          Email is required
+        </div>
+        <div
+          class="invalid-feedback"
+          [class.show]="f['email'].hasError('email')"
+        >
+          Email is invalid
+        </div>
+      </div>
+    </div>
+    <div formGroupName="passwordGroup">
+      <!-- Password Group -->
+      <div class="mb-3">
+        <div class="form-floating">
+          <input
+            type="password"
+            class="form-control"
+            name="password"
+            id="password"
+            placeholder="Password"
+            formControlName="password"
+            [ngClass]="{
+              'is-invalid':
+                submitted &&
+                f['passwordGroup'].get('password').invalid &&
+                (f['passwordGroup'].get('password').dirty ||
+                  f['passwordGroup'].get('password').touched)
+            }"
+          />
+          <label for="password">Password</label>
+        </div>
+        <div
+          *ngIf="
+            submitted &&
+            f['passwordGroup'].get('password').invalid &&
+            (f['passwordGroup'].get('password').dirty ||
+              f['passwordGroup'].get('password').touched)
+          "
+        >
+          <div
+            class="invalid-feedback"
+            [class.show]="
+              f['passwordGroup'].get('password').hasError('required')
+            "
+          >
+            Password is required
+          </div>
+          <div
+            class="invalid-feedback"
+            [class.show]="
+              f['passwordGroup'].get('password').hasError('pattern')
+            "
+          >
+            Include at least of one number,one uppercase, one non-alphanumber
+            character
+          </div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <div class="form-floating">
+          <input
+            type="password"
+            class="form-control"
+            name="cpassword"
+            id="cpassword"
+            placeholder="Confirm Password"
+            formControlName="cpassword"
+            [ngClass]="{
+              'is-invalid':
+                submitted &&
+                f['passwordGroup'].invalid &&
+                (f['passwordGroup'].get('cpassword').dirty ||
+                  f['passwordGroup'].get('cpassword').touched)
+            }"
+          />
+          <label for="cpassword">Confirm Password</label>
+        </div>
+        <div
+          *ngIf="
+            submitted &&
+            f['passwordGroup'].invalid &&
+            (f['passwordGroup'].get('cpassword').dirty ||
+              f['passwordGroup'].get('cpassword').touched)
+          "
+        >
+          <div
+            class="invalid-feedback"
+            [class.show]="f['passwordGroup'].hasError('passwordMismatch')"
+          >
+            Passwords mismatch
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-check form-switch">
+      <input
+        class="form-check-input"
+        type="checkbox"
+        id="isUserAdmin"
+        formControlName="role"
+      />
+      <label class="form-check-label" for="isUserAdmin"
+        >Is an Administrator?</label
+      >
+    </div>
+  </div>
+
+  <div class="card-footer d-flex justify-content-between">
+    <button class="btn btn-danger" type="button" (click)="resetForm()">
+      Clear Form
+    </button>
+    <button class="btn btn-success" type="submit" [disabled]="form.invalid">
+      Save User
+    </button>
+  </div>
+</form>

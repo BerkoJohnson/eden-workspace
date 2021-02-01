@@ -18,7 +18,7 @@ import { FullwidthComponent } from './comps/fullwidth/fullwidth/fullwidth.compon
         children: [
           { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
           {
-            path: 'users',
+            path: 'settings',
             loadChildren: () =>
               import('./comps/settings/settings.module').then(
                 (mod) => mod.SettingsModule

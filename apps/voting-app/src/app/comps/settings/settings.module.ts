@@ -12,9 +12,14 @@ import { MaterialModule } from '../../material/material.module';
 import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
-  declarations: [UserProfileComponent, UsersListComponent, NewUserComponent, SettingsComponent],
+  declarations: [
+    UserProfileComponent,
+    UsersListComponent,
+    NewUserComponent,
+    SettingsComponent,
+  ],
   imports: [
-  CommonModule,
+    CommonModule,
     FormsModule,
     ReactiveFormsModule,
     MaterialModule,
@@ -23,4 +28,4 @@ import { SharedModule } from '../../shared/shared.module';
   ],
   providers: [UsersService],
 })
-export class SettingsModule { }
+export class SettingsModule {}

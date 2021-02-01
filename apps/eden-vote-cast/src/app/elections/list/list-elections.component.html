@@ -1,0 +1,17 @@
+<div class="list-group">
+  <a
+    *ngFor="let election of list$ | async; let i = index"
+    (click)="markElection(election)"
+    routerLink="/elections/view"
+    class="list-group-item list-group-item-action"
+    [ngClass]="{active: election?._id === selectedElection}"
+    aria-current="true"
+  >
+    <div class="d-flex w-100 justify-content-between">
+      <h5 class="mb-1">{{ election?.title }}</h5>
+      <small>{{ election?.createdAt | date: 'fullDate' }}</small>
+    </div>
+    <p class="mb-1">Academic Year: {{ election?.academicYear }}</p>
+    <small>Click to view full details</small>
+  </a>
+</div>

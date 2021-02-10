@@ -10,7 +10,7 @@ import { Position, PositionSchema } from './position.schema';
 @Module({
   imports: [
     MongooseModule.forFeature([
-      { name: Candidate.name, schema: CandidateSchema },
+      { name: Candidate.name, schema: CandidateSchema, },
       { name: Election.name, schema: ElectionSchema },
       { name: Position.name, schema: PositionSchema },
     ]),

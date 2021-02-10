@@ -12,16 +12,18 @@ export class Election {
   })
   title: string;
 
-  @Prop({ required: true, trim: true})
+  @Prop({ required: true, trim: true })
   academicYear: string;
 
   @Prop({
     type: [{ ref: 'Position', type: mongoose.Schema.Types.ObjectId }],
-    // validate: (value) => {
-    //   return value.length >= 1;
-    // },
   })
   positions: string[];
+
+  @Prop({
+    type: [{ ref: 'Candidate', type: mongoose.Schema.Types.ObjectId }],
+  })
+  candidates: string[];
 }
 
 export const ElectionSchema = SchemaFactory.createForClass(Election);

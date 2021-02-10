@@ -1,24 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ElectionsService } from '../elections.service';
+import { Elections, IElection } from '../Election';
 
 @Component({
   selector: 'evc-list-elections',
   templateUrl: './list-elections.component.html',
   styleUrls: ['./list-elections.component.scss'],
 })
-export class ListElectionsComponent implements OnInit{
-  list$: Observable<any>;
-  selectedElection = '';
-  constructor(private electionsService: ElectionsService) {}
+export class ListElectionsComponent {
+  @Output() selectElection = new EventEmitter<string>();
+  @Input() elections: Observable<Elections>;
+  @Input() selectedElection: Observable<string>;
 
-  ngOnInit(): void {
-    this.list$ = this.electionsService.getElections();
-  }
-
-
-  markElection(election: any) {
-    this.selectedElection = election?._id;
-    this.electionsService.selectedElectionSub.next(election);
+  select(election: string) {
+    this.selectElection.emit(election)
   }
 }

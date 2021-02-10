@@ -18,31 +18,30 @@ export class Candidate {
   lastName: string;
 
   @Prop({
-    enum: ['Male','Female'],
-    required: true
+    enum: ['Male', 'Female'],
+    required: true,
   })
   gender: string;
 
   @Prop({
-    required: true
+    required: true,
   })
   dob: string;
 
-  @Prop({required: true})
+  @Prop({ required: true })
   room: string;
 
-  @Prop({required: true})
+  @Prop({ required: true })
   nickname: string;
 
-  @Prop({required: true})
+  @Prop({ required: true })
   displayMessage: string;
 
-  @Prop({
-    ref: 'Position',
-    type: mongoose.Schema.Types.ObjectId,
-    required: true
-  })
+  @Prop({ ref: 'Position', type: mongoose.Schema.Types.ObjectId })
   position: string;
+
+  @Prop({ ref: 'Election', type: mongoose.Schema.Types.ObjectId })
+  election: string;
 }
 
 export const CandidateSchema = SchemaFactory.createForClass(Candidate);

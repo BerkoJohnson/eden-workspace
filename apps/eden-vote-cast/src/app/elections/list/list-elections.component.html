@@ -1,10 +1,10 @@
 <div class="list-group">
   <a
-    *ngFor="let election of list$ | async; let i = index"
-    (click)="markElection(election)"
+    *ngFor="let election of elections | async; let i = index"
+    (click)="select(election._id)"
     routerLink="/elections/view"
     class="list-group-item list-group-item-action"
-    [ngClass]="{active: election?._id === selectedElection}"
+    [ngClass]="{active: election?._id === (selectedElection | async)}"
     aria-current="true"
   >
     <div class="d-flex w-100 justify-content-between">
@@ -15,3 +15,4 @@
     <small>Click to view full details</small>
   </a>
 </div>
+

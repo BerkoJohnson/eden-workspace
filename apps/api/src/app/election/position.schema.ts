@@ -12,21 +12,10 @@ export class Position {
   })
   pos_name: string;
 
-  @Prop({
-    ref: 'Election',
-    type: mongoose.Schema.Types.ObjectId,
-    required: true
-  })
+  @Prop({ ref: 'Election', type: mongoose.Schema.Types.ObjectId })
   election: string;
 
-  @Prop({
-    type: [
-      {
-        ref: 'Candidate',
-        type: mongoose.Schema.Types.ObjectId,
-      },
-    ]
-  })
+  @Prop({ type: [{ ref: 'Election', type: mongoose.Schema.Types.ObjectId }] })
   candidates: string[];
 }
 

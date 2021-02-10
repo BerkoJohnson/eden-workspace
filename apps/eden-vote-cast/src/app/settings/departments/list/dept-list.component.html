@@ -1,0 +1,25 @@
+<div class="card">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <span class="text-uppercase fw-bold">Departments</span>
+
+    <a class="btn btn-sm btn-outline-secondary" routerLink="./new"> Add New </a>
+  </div>
+  <div
+    class="list-group list-group-flush"
+    *ngFor="
+      let dept of departments$ | async;
+      let i = index;
+      trackBy: trackByKey
+    "
+  >
+    <a
+      (dblclick) = "editDepartment(dept._id)"
+      class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+    >
+      {{ dept.title }}
+      <span class="badge bg-primary rounded-pill">{{
+        dept.subjects.length
+      }}</span>
+    </a>
+  </div>
+</div>

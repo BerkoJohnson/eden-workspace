@@ -56,13 +56,13 @@ export class ElectionController {
     return this.electionService.removePosition(electionID, positions);
   }
 
-  @Patch('positions/:positionID/candidates')
+  @Post(':electionID/candidates')
   @UseGuards(JwtGuard)
   async addCandidates(
-    @Param('positionID') positionID: string,
+    @Param('electionID') electionID: string,
     @Body(ValidationPipe) createCandidatesDto: CreateCandidateDto
   ) {
-    return this.electionService.addCandidates(positionID, createCandidatesDto);
+    return this.electionService.addCandidates(electionID, createCandidatesDto);
   }
 
 

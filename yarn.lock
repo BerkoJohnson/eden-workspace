@@ -8819,6 +8819,13 @@ ng2-semantic-ui@^0.9.7:
     popper.js "^1.14.0"
     rxjs "^5.0.1"
 
+ngx-csv-parser@^0.0.6:
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/ngx-csv-parser/-/ngx-csv-parser-0.0.6.tgz#36de1ab90dfc516ed00f08be7998fa11e46d8300"
+  integrity sha512-4MWYOXMv3HJCw8hFgEN2uUUNBkJ2FOpQ/VDuCqq8fxbMQXm3aB8HM14L+6g31zvBRoul2FcyKpPMxCVyKxMI4A==
+  dependencies:
+    tslib "^1.10.0"
+
 nice-try@^1.0.4:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/nice-try/-/nice-try-1.0.5.tgz#a3378a7696ce7d223e88fc9b764bd7ef1089e366"

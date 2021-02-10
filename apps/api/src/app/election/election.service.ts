@@ -65,138 +65,161 @@ export class ElectionService {
   ): Promise<ElectionDocument> {
     const { title, academicYear, positions } = electionDto;
 
-    // find election with stated id
-    const foundElection = await this.electionModel.findById(id);
+    try {
+      // find election with stated id
+      const foundElection = await this.electionModel.findById(id);
 
-    // if electionID not found
-    if (!foundElection) {
-      throw new NotFoundException('Election not found');
+      // if electionID not found
+      if (!foundElection) {
+        throw new NotFoundException('Election not found');
+      }
+
+      // if found but title is changed, update title
+      if (foundElection.title !== title) {
+        foundElection.title = title;
+      }
+
+      // if found but academicYear is changed, update academicYear
+      if (foundElection.academicYear !== academicYear) {
+        foundElection.academicYear = academicYear;
+      }
+
+      // Get all positions with no ids, meaning not saved ones.
+      const positionsWithNoIds = positions.filter((pos) => !pos._id);
+
+      // Get all positions with ids
+      const positionsWithIds = positions.filter((pos) => pos._id);
+
+      // Loop through the saved positions and update their documents
+      for (let i = 0; i < positionsWithIds.length; i++) {
+        await this.positionModel.findByIdAndUpdate(positionsWithIds[i]._id, {
+          pos_name: positionsWithIds[i].pos_name,
+        });
+      }
+
+      // loop through the others not saved, save them and
+
+      for (let i = 0; i < positionsWithNoIds.length; i++) {
+        const newPost = new this.positionModel();
+        newPost.pos_name = positionsWithNoIds[i].pos_name;
+        newPost.election = id;
+
+        // push their ids to the foundElection.positions array
+        foundElection.positions.push(newPost._id);
+
+        await newPost.save();
+      }
+
+      // finally save the foundElection or update it.
+      await foundElection.save();
+
+      return this.getElection(id);
+    } catch (error) {
+      console.log(error);
     }
-
-    // if found but title is changed, update title
-    if (foundElection.title !== title) {
-      foundElection.title = title;
-    }
-
-    // if found but academicYear is changed, update academicYear
-    if (foundElection.academicYear !== academicYear) {
-      foundElection.academicYear = academicYear;
-    }
-
-    // Get all positions with no ids, meaning not saved ones.
-    const positionsWithNoIds = positions.filter((pos) => !pos._id);
-
-    // Get all positions with ids
-    const positionsWithIds = positions.filter((pos) => pos._id);
-
-    // Loop through the saved positions and update their documents
-    for (let i = 0; i < positionsWithIds.length; i++) {
-      await this.positionModel.findByIdAndUpdate(positionsWithIds[i]._id, {
-        pos_name: positionsWithIds[i].pos_name,
-      });
-    }
-
-    // loop through the others not saved, save them and
-
-    for (let i = 0; i < positionsWithNoIds.length; i++) {
-      const newPost = new this.positionModel();
-      newPost.pos_name = positionsWithNoIds[i].pos_name;
-      newPost.election = foundElection._id;
-
-      // push their ids to the foundElection.positions array
-      foundElection.positions.push(newPost._id);
-
-      await newPost.save();
-    }
-
-    // finally save the foundElection or update it.
-    return await foundElection.save();
   }
 
   async getElections(): Promise<ElectionDocument[]> {
     return this.electionModel.find().populate({
-      path: 'positions',
-      populate: {
-        path: 'candidates',
-      },
+      path: 'positions candidates',
     });
   }
 
   async getElection(electionId: string) {
     return this.electionModel.findById(electionId).populate({
-      path: 'positions',
-      populate: {
-        path: 'candidates',
-      },
+      path: 'positions candidates',
     });
   }
 
   async removePosition(electionID: string, positions: string[]) {
     try {
-      const foundElection = await this.electionModel.findById(electionID);
+      // const foundElection =
 
       for (let i = 0; i < positions.length; i++) {
-        const currentPostIndex = foundElection.positions.indexOf(positions[i]);
-
         // check each positions exists
         const foundPosition = await this.positionModel.findOne({
           _id: positions[i],
           election: electionID,
         });
 
-        if (foundPosition && currentPostIndex > -1) {
+        if (foundPosition) {
           // check if positions has candidates assigned
           if (foundPosition.candidates.length >= 1) {
             // remove candidates
           }
+
           // remove this position
           await foundPosition.remove();
           // update foundElection
 
-          foundElection.positions.splice(currentPostIndex, 1);
+          await this.electionModel.findByIdAndUpdate(electionID, {
+            $pull: {
+              positions: foundPosition._id,
+            },
+          });
         }
-        await foundElection.save();
       }
+
+      return this.getElection(electionID);
     } catch (error) {
       console.log(error);
     }
   }
 
   async addCandidates(
-    positionID: string,
+    electionID: string,
     createCandidatesDto: CreateCandidateDto
   ) {
     const { candidates } = createCandidatesDto;
 
     try {
-      // check if position exists
-      const position = await this.positionModel.findById(positionID);
+      const candidateIDsArray: string[] = [];
+      for (let i = 0; i < candidates.length; i++) {
+        const candidateData = candidates[i];
 
-      if (!position) {
-        throw new BadRequestException('Position does not exist');
+        const foundCandidate = await this.candidateModel.findOne({
+          firstName: candidateData.firstName,
+          lastName: candidateData.lastName,
+          election: electionID,
+        });
+
+        if (foundCandidate) {
+          throw new BadRequestException(
+            'This person is already a candidate in this election.'
+          );
+        }
+
+        const newCandidate = new this.candidateModel();
+        newCandidate.firstName = candidateData.firstName;
+        newCandidate.lastName = candidateData.lastName;
+        newCandidate.dob = candidateData.dob;
+        newCandidate.gender = candidateData.gender;
+        newCandidate.position = candidateData.position;
+        newCandidate.election = electionID;
+        newCandidate.room = candidateData.room;
+        newCandidate.nickname = candidateData.nickname;
+        newCandidate.displayMessage = candidateData.displayMessage;
+
+        // update the candidates array of the position model
+        await this.positionModel.findByIdAndUpdate(candidateData.position, {
+          $addToSet: {
+            candidates: newCandidate._id,
+          },
+        });
+
+        // attach new candidate to the elections.candidates array
+        candidateIDsArray.push(newCandidate._id);
+
+        await newCandidate.save();
       }
 
-      // create candidates
-
-      candidates.forEach(async (candidate) => {
-        const candToSave = new this.candidateModel();
-        candToSave.firstName = candidate.firstName;
-        candToSave.lastName = candidate.lastName;
-        candToSave.dob = candidate.dob;
-        candToSave.gender = candidate.gender;
-        candToSave.position = position._id;
-        candToSave.nickname = candidate.nickname;
-        candToSave.room = candidate.room;
-        candToSave.displayMessage = candidate.displayMessage;
-
-        position.candidates.push(candToSave._id);
-
-        await candToSave.save();
+      await this.electionModel.findByIdAndUpdate(electionID, {
+        $addToSet: {
+          candidates: { $each: candidateIDsArray },
+        },
       });
 
-      await position.save();
-
-      return await this.getElection(position.election);
+      return await this.getElection(electionID);
     } catch (error) {
       console.log(error);
     }

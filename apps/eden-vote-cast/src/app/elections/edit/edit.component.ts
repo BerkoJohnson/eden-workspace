@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
+import {  FormBuilder, Validators, FormArray } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ElectionsService } from '../elections.service';
+import { Store } from '@ngrx/store';
+import { IElection } from '../Election';
+import { updateElection } from '../elections.actions';
+import { selectMarkedElection } from '../selectors';
 
 @Component({
   selector: 'evc-edit-election',
@@ -9,7 +12,7 @@ import { ElectionsService } from '../elections.service';
   styleUrls: ['./edit.component.scss'],
 })
 export class EditElectionComponent implements OnInit {
-  selectedElection: any;
+  selectedElection: IElection;
   form = this.createForm();
   defaultAcademicYear: string;
   submitted = false;
@@ -18,12 +21,12 @@ export class EditElectionComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private electionsService: ElectionsService,
+    private store: Store,
     private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.electionsService.selectedElection.subscribe(
+    this.store.select(selectMarkedElection).subscribe(
       (election) => (this.selectedElection = election)
     );
 
@@ -66,11 +69,7 @@ export class EditElectionComponent implements OnInit {
       return;
     }
 
-    this.electionsService
-      .update(this.form.value, this.selectedElection._id)
-      .subscribe((res) => {
-        this.router.navigate(['elections/view']);
-      });
+    this.store.dispatch(updateElection({update: this.form.value, electionID: this.selectedElection._id}))
   }
 
   get f() {
@@ -95,9 +94,5 @@ export class EditElectionComponent implements OnInit {
 
   removePosition(i: number, _id: string) {
     this.positionsArray.removeAt(i);
-
-    if(_id) {
-
-    }
   }
 }

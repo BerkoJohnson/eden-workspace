@@ -1,53 +1,44 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { Candidates, Elections, IElection, IPosition } from './Election';
-import { tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Candidates, Elections, IElection } from './Election';
 
 @Injectable({ providedIn: 'root' })
 export class ElectionsService {
-  selectedElectionSub = new BehaviorSubject<IElection>(null);
-  selectedPositionSub = new BehaviorSubject<IPosition>(null);
-
   constructor(private http: HttpClient) {}
-
-  get selectedElection() {
-    return this.selectedElectionSub.asObservable();
-  }
-
-  get selectedPosition() {
-    return this.selectedPositionSub.asObservable();
-  }
 
   getElections(): Observable<Elections> {
     return this.http.get<Elections>('/api/elections');
   }
 
   createElection(electionData: IElection): Observable<IElection> {
-    return this.http
-      .post<IElection>('/api/elections', electionData)
-      .pipe(tap((res) => this.selectedElectionSub.next(res)));
+    return this.http.post<IElection>('/api/elections', electionData);
   }
 
-  update(electionData: IElection, id: string) {
-    return this.http
-      .patch(`/api/elections/${id}`, electionData)
-      .pipe(tap(() => this.getElection(id).subscribe()));
+  update(electionData: Partial<IElection>, id: string) {
+    return this.http.patch<IElection>(`/api/elections/${id}`, electionData);
+  }
+
+  addCandidates(candidates: any, electionId: string) {
+    return this.http.post('/api/elections/' + electionId + '/candidates', candidates)
   }
 
   removePositions(electionId: string, markedPositions: string[]) {
-    return this.http
-      .patch('/api/elections/' + electionId + '/positions', markedPositions)
-      .pipe(tap(() => this.getElection(electionId).subscribe()));
+    return this.http.patch<IElection>(
+      '/api/elections/' + electionId + '/positions',
+      markedPositions
+    );
   }
 
-  getElection(electionId: string): Observable<IElection> {
-    return this.http
-      .get<IElection>('/api/elections/' + electionId)
-      .pipe(tap((res) => this.selectedElectionSub.next(res)));
+  getElection(electionId: string) {
+    return this.http.get<IElection>('/api/elections/' + electionId);
   }
 
-  addCandidates(positionID: string, candidates: Candidates) {
-    return this.http.patch('/api/elections/positions/'+ positionID +'/candidates', candidates);
-  }
+  // addCandidates(positionID: string, candidates: Candidates) {
+  //   return this.http.patch(
+  //     '/api/elections/positions/' + positionID + '/candidates',
+  //     candidates
+  //   );
+  // }
 }

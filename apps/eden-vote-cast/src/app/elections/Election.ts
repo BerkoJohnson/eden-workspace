@@ -2,6 +2,7 @@ export interface IElection extends IBase {
   title: string;
   academicYear: string;
   positions: Positions;
+  candidates?: Candidates;
 }
 
 export type Elections = IElection[];
@@ -25,6 +26,7 @@ export interface ICandidate extends IBase {
   lastName: string;
   dob: string;
   gender: 'Male' | 'Female';
+  position: string;
   room: string;
   nickname: string;
   displayMessage?: string;

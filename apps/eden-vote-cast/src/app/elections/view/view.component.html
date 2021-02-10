@@ -1,6 +1,9 @@
 <div class="card" *ngIf="selectedElection$ | async as election">
-  <div class="card-header">
+  <div class="card-header d-flex justify-content-between align-items-center">
     <h6>Viewing Election Details</h6>
+    <a class="btn btn-sm btn-outline-secondary" routerLink="/elections/edit">
+      <span><i class="bi-pencil-square"></i> Update</span></a
+    >
   </div>
   <div class="card-body">
     <div class="w-100">
@@ -37,9 +40,10 @@
             }}</label>
           </div>
           <div class="btn-group btn-sm">
-            <a class="btn btn-sm btn-outline-primary" routerLink="../positions" (click)="markPosition(pos)">
+            <a title="View details" class="btn btn-sm btn-outline-primary" routerLink="../positions" (click)="markPosition(pos._id)">
               <span><i class="bi-pencil"></i></span></a
             ><button
+            [title]="'Remove '+ pos.pos_name "
               class="btn btn-sm btn-outline-danger"
               type="button"
               (click)="removeMarkedPosts(election._id, pos._id)"
@@ -61,8 +65,11 @@
     </div>
   </div>
   <div class="card-footer d-flex justify-content-between align-items-center">
-    <a class="btn btn-sm btn-outline-primary" routerLink="/elections/edit">
+    <a class="btn btn-sm btn-outline-secondary" routerLink="/elections/edit">
       <span><i class="bi-pencil-square"></i> Update</span></a
+    >
+    <a class="btn btn-sm btn-outline-warning" routerLink="/elections/candidates">
+      <span><i class="bi-plus"></i>Add Candidate</span></a
     >
     <div class="">
       <small class="text-muted">

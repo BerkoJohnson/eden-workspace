@@ -13,6 +13,10 @@ import { ViewElectionComponent } from './view/view.component';
 import { EditElectionComponent } from './edit/edit.component';
 import { CandidatesComponent } from './candidates/candidates.component';
 import { PositionsComponent } from './positions/positions.component';
+import { StoreModule } from '@ngrx/store';
+import * as fromElections from './elections.reducer';
+import { EffectsModule } from '@ngrx/effects';
+import { ElectionEffects } from './election.effects';
 
 const routes: Routes = [
   {
@@ -24,6 +28,7 @@ const routes: Routes = [
       { path: 'edit', component: EditElectionComponent },
       { path: 'view', component: ViewElectionComponent },
       { path: 'positions', component: PositionsComponent },
+      { path: 'candidates', component: CandidatesComponent },
     ],
   },
 ];
@@ -45,6 +50,9 @@ const routes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
+    StoreModule.forFeature(fromElections.electionsFeatureKey, fromElections.reducer),
+    EffectsModule.forFeature([ElectionEffects]),
+
   ],
   exports: [RouterModule],
   providers: [ElectionsService],

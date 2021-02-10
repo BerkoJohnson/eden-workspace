@@ -1,0 +1,53 @@
+<div class="card">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <span class="fw-bold text-uppercase">Subjects</span>
+
+    <a class="btn btn-sm btn-outline-secondary" routerLink="./new"> Add New </a>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-8">Show Subjects:</div>
+      <div class="col-4">
+        <select
+          #showSubjectsSelect
+          (change)="showSubjects = showSubjectsSelect.value"
+        >
+          <option value="all" selected>ALL</option>
+          <option value="core">CORE</option>
+          <option value="elective">ELECTIVE</option>
+        </select>
+      </div>
+    </div>
+
+    <div>
+      <input
+        type="checkbox"
+        #markAllChk
+        (change)="markAll = markAllChk.checked"
+      />
+    </div>
+
+    <ul class="list-group mt-4">
+      <li
+        class="list-group-item w-100 d-flex justify-content-between"
+        *ngFor="let subj of subjects; let i = index; trackBy: trackByKey"
+      >
+        <span>
+          <input
+            class="form-check-input me-1"
+            type="checkbox"
+            [value]="subj._id"
+            [id]="'chk' + i"
+            (change)="mark(subj._id)"
+            [checked]="markAll"
+          />
+          {{ subj.title }}</span
+        >
+
+        <button class="btn btn-sm btn-outline-danger" type="button">
+          <span><i class="bi-trash"></i></span>
+        </button>
+      </li>
+    </ul>
+  </div>
+</div>

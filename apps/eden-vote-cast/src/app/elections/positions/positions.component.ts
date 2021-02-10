@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, Validators } from '@angular/forms';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { ICandidate, IPosition } from '../Election';
-import { ElectionsService } from '../elections.service';
+import { selectMarkedPosition } from '../selectors';
 
 @Component({
   selector: 'evc-positions',
@@ -18,12 +19,12 @@ export class PositionsComponent implements OnInit {
   });
 
   constructor(
-    private electionsService: ElectionsService,
+    private store: Store,
     private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
-    this.selectedPosition$ = this.electionsService.selectedPosition;
+    this.selectedPosition$ = this.store.select(selectMarkedPosition);
   }
 
   get candidatesArray() {
@@ -53,7 +54,7 @@ export class PositionsComponent implements OnInit {
       return;
     }
 
-   this.electionsService.addCandidates(_id, this.form.value).subscribe(d => console.log(d))
+  //  this.electionsService.addCandidates(_id, this.form.value).subscribe(d => console.log(d))
   }
 
   markCandidates(marked: boolean, candidateID: string) {

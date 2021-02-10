@@ -14,6 +14,13 @@ import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { MyProfileComponent } from './my-profile/my-profile.component';
 import { LoginGuard } from './auth/login.guard';
 import { CantAccessPageComponent } from './cant-access-page/cant-access-page.component';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreRouterConnectingModule } from '@ngrx/router-store';
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+// import { environment } from '../environments/environment';
+import { ROOT_REDUCERS,metaReducers } from './reducers';
+// import { RouterEffects } from './effects/router.effects';
 
 @NgModule({
   declarations: [
@@ -30,10 +37,29 @@ import { CantAccessPageComponent } from './cant-access-page/cant-access-page.com
     AuthModule,
     HttpClientModule,
     SharedModule,
+    StoreModule.forRoot(ROOT_REDUCERS, {
+      metaReducers,
+      runtimeChecks: {
+        // strictStateImmutability and strictActionImmutability are enabled by default
+        strictStateSerializability: true,
+        strictActionSerializability: true,
+        strictActionWithinNgZone: true,
+        strictActionTypeUniqueness: true,
+      },
+    }),
+    StoreRouterConnectingModule.forRoot(),
+    StoreDevtoolsModule.instrument({
+      name: 'EdenVote',
+    }),
+    EffectsModule.forRoot([]),
   ],
   providers: [
     LoginGuard,
-    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: JwtInterceptor,
+      multi: true,
+    },
   ],
   bootstrap: [AppComponent],
 })

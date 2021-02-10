@@ -13,6 +13,7 @@ export class DefaultComponent implements OnInit{
   links: Links = [
     {href: 'users', title: 'Users'},
     {href: 'elections', title: 'Elections'},
+    {href: 'settings', title: 'School Setup'},
   ];
 
   user: {email: string, role: ROLES}

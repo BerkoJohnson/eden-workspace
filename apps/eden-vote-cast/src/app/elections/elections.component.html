@@ -27,12 +27,17 @@
   </div>
 </evc-page-header>
 
-<div class="container-fluid">
+
+<div class="mt-4">
   <div class="row">
-    <div class="col-sm-8">
-      <evc-list-elections></evc-list-elections>
+    <div class="col-sm-5 col-md-5">
+      <evc-list-elections
+      [elections] ="elections$"
+      [selectedElection] = "selectedElection$"
+      (selectElection)="selected($event)"
+      ></evc-list-elections>
     </div>
-    <div class="col-sm-4">
+    <div class="col-sm-7 col-md-4">
       <router-outlet></router-outlet>
     </div>
   </div>

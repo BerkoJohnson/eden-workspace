@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { IPosition } from '../Election';
-import { ElectionsService } from '../elections.service';
+import { IElection } from '../Election';
+import { markCurrentPosition, removePosts } from '../elections.actions';
+import { selectMarkedElection } from '../selectors';
 
 @Component({
   selector: 'evc-view',
@@ -10,12 +12,12 @@ import { ElectionsService } from '../elections.service';
 })
 export class ViewElectionComponent implements OnInit {
   // markedPost = '';
-  selectedElection$: Observable<any>;
-  constructor(private electionsService: ElectionsService) {}
+  selectedElection$: Observable<IElection>;
+  constructor(private store: Store) {}
 
   markedPositions: string[] = [];
   ngOnInit(): void {
-    this.selectedElection$ = this.electionsService.selectedElection;
+    this.selectedElection$ = this.store.select(selectMarkedElection);
   }
 
   markPost(marked: boolean, postId: string) {
@@ -26,22 +28,16 @@ export class ViewElectionComponent implements OnInit {
     }
   }
 
-  removeMarkedPosts(electionID: string, posId= '') {
-    if(!posId) {
-      // delete all marked positions
-      this.electionsService.removePositions(electionID, this.markedPositions).subscribe(ps => {
-        // console.log()
-      });
-    } else {
-      const posArray = [posId];
-    this.electionsService.removePositions(electionID, posArray).subscribe();
-    }
+  removeMarkedPosts(electionID: string, posId = '') {
+    const positionsArray = posId ? [posId] : this.markedPositions;
 
+    this.store.dispatch(removePosts({ electionID, positions: positionsArray }));
   }
 
-  markPosition(pos: IPosition) {
-    this.electionsService.selectedPositionSub.next(pos);
+  markPosition(posID: string) {
+    this.store.dispatch(markCurrentPosition({position: posID}));
   }
+
   trackByKey(index: number, obj: any) {
     return obj._id;
   }

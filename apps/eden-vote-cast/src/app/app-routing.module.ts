@@ -29,6 +29,12 @@ const routes: Routes = [
           import('./users/user.module').then((mod) => mod.UserModule),
       },
       {
+        path: 'settings',
+        data: { roles: [ROLES.SUPERADMIN, ROLES.ADMIN], redirectUrl: 'no-access' },
+        canActivate: [RoleAccessGuard],
+        loadChildren: () => import('./settings/settings.module').then((mod) => mod.SettingsModule)
+      },
+      {
         path: 'elections',
         data: { roles: [ROLES.SUPERADMIN, ROLES.ADMIN], redirectUrl: 'no-access' },
         canActivate: [RoleAccessGuard],

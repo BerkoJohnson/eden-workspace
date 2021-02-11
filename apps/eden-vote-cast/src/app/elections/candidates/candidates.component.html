@@ -4,6 +4,7 @@
     <a routerLink="../view" class="btn btn-sm btn-secondary">Back</a>
   </div>
   <div class="card-body">
+    <h5 *ngIf="candidatesArray.length === 0">Click Add New to continue</h5>
     <ng-container
       formArrayName="candidates"
       *ngFor="let candGroup of candidatesArray.controls; let i = index"

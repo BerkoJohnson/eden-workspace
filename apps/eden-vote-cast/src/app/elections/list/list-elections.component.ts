@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { Elections, IElection } from '../Election';
+import { Elections } from '../Election';
 
 @Component({
   selector: 'evc-list-elections',
@@ -14,5 +15,12 @@ export class ListElectionsComponent {
 
   select(election: string) {
     this.selectElection.emit(election)
+  }
+
+  constructor(private router: Router) {}
+
+
+  view() {
+    this.router.navigate(['/elections/view']);
   }
 }

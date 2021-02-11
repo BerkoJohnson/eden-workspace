@@ -30,6 +30,22 @@ export class ElectionEffects {
     );
   });
 
+  createNewElection$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ElectionActions.CreateNewElection),
+      mergeMap(({ election }) =>
+        this.electionService.createElection(election).pipe(
+          map((data) =>
+            ElectionActions.CreateNewElectionSuccess({ election: data })
+          ),
+          catchError((error) =>
+            of(ElectionActions.CreateNewElectionFailure({ error }))
+          )
+        )
+      )
+    )
+  );
+
   removePosts$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(ElectionActions.removePosts),

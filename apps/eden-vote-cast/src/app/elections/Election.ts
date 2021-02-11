@@ -8,9 +8,9 @@ export interface IElection extends IBase {
 export type Elections = IElection[];
 
 interface IBase {
-  _id: string;
-  createdAt: string;
-  updatedAt: string;
+  _id?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface IPosition extends IBase {

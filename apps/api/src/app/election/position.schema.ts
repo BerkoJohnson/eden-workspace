@@ -15,7 +15,7 @@ export class Position {
   @Prop({ ref: 'Election', type: mongoose.Schema.Types.ObjectId })
   election: string;
 
-  @Prop({ type: [{ ref: 'Election', type: mongoose.Schema.Types.ObjectId }] })
+  @Prop({ type: [{ ref: 'Candidate', type: mongoose.Schema.Types.ObjectId }] })
   candidates: string[];
 }
 

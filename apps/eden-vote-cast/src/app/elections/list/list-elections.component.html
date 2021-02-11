@@ -1,9 +1,8 @@
 <div class="list-group">
-  <a
+  <div
     *ngFor="let election of elections | async; let i = index"
-    (click)="select(election._id)"
-    routerLink="/elections/view"
-    class="list-group-item list-group-item-action"
+    (dblclick)="select(election._id); view()"
+    class="list-group-item list-group-item-action d-flex flex-column"
     [ngClass]="{active: election?._id === (selectedElection | async)}"
     aria-current="true"
   >
@@ -12,7 +11,11 @@
       <small>{{ election?.createdAt | date: 'fullDate' }}</small>
     </div>
     <p class="mb-1">Academic Year: {{ election?.academicYear }}</p>
-    <small>Click to view full details</small>
-  </a>
+    <small><em>Double click to view full details</em></small>
+    <div class="btn-group py-2">
+      <a class="btn btn-sm btn-dark">Candidates</a>
+      <a class="btn btn-sm btn-danger">Resign Candidates</a>
+    </div>
+  </div>
 </div>
 

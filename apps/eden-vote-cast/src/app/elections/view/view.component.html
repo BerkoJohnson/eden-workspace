@@ -22,8 +22,8 @@
       <h6 class="text-uppercase text-white mt-4 bg-dark p-2">
         Saved Positions
       </h6>
-      <hr />
-      <ul class="list-group">
+
+      <ul class="list-group" *ngIf="election.positions.length;else no_positions">
         <li
           *ngFor="let pos of election?.positions; trackBy: trackByKey"
           class="list-group-item d-flex justify-content-between align-items-center"
@@ -54,6 +54,13 @@
         </li>
       </ul>
 
+      <ng-template #no_positions>
+        <h6>
+          No positions yet. Click Update to add one.
+        </h6>
+      </ng-template>
+
+
       <button
         class="btn btn-sm btn-danger mt-2"
         type="button"
@@ -69,9 +76,9 @@
       <span><i class="bi-pencil-square"></i> Update</span></a
     >
     <a class="btn btn-sm btn-outline-warning" routerLink="/elections/candidates">
-      <span><i class="bi-plus"></i>Add Candidate</span></a
+      <span>+Add Candidate</span></a
     >
-    <div class="">
+    <!-- <div class="">
       <small class="text-muted">
         <em>Last Updated:</em><br />
         <b>
@@ -79,6 +86,6 @@
           {{ election?.updatedAt | date: 'shortTime' }}
         </b>
       </small>
-    </div>
+    </div> -->
   </div>
 </div>

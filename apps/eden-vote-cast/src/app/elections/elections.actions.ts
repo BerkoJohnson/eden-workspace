@@ -1,7 +1,12 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { createAction, props } from '@ngrx/store';
 import { Candidates, Elections, IElection } from './Election';
 
 export const loadElections = createAction('[Elections] Load Elections');
+
+export const CreateNewElection = createAction('[Election] Create Election', props<{election: IElection}>());
+export const CreateNewElectionSuccess = createAction('[Election] Create Election Success', props<{election: IElection}>());
+export const CreateNewElectionFailure = createAction('[Election] Create Election Failure', props<{error: any}>());
 
 export const loadElectionsSuccess = createAction(
   '[Elections] Load Elections Success',

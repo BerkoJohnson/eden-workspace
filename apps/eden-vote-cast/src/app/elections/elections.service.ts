@@ -1,8 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { Candidates, Elections, IElection } from './Election';
+import { Elections, IElection } from './Election';
 
 @Injectable({ providedIn: 'root' })
 export class ElectionsService {
@@ -21,7 +20,7 @@ export class ElectionsService {
   }
 
   addCandidates(candidates: any, electionId: string) {
-    return this.http.post('/api/elections/' + electionId + '/candidates', candidates)
+    return this.http.post('/api/elections/' + electionId + '/candidates', {candidates})
   }
 
   removePositions(electionId: string, markedPositions: string[]) {
@@ -34,11 +33,4 @@ export class ElectionsService {
   getElection(electionId: string) {
     return this.http.get<IElection>('/api/elections/' + electionId);
   }
-
-  // addCandidates(positionID: string, candidates: Candidates) {
-  //   return this.http.patch(
-  //     '/api/elections/positions/' + positionID + '/candidates',
-  //     candidates
-  //   );
-  // }
 }

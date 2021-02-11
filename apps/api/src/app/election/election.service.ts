@@ -36,6 +36,8 @@ export class ElectionService {
       election.title = title;
       election.academicYear = academicYear;
 
+      const savedElection = await election.save();
+
       const savedPositionsArray: string[] = [];
 
       if (positions.length) {
@@ -50,10 +52,18 @@ export class ElectionService {
         }
       }
 
-      election.positions = savedPositionsArray;
-
-      await election.save();
-      return await this.getElection(election._id);
+      return await this.electionModel.findByIdAndUpdate(
+        savedElection._id,
+        {
+          $addToSet: {
+            positions: { $each: savedPositionsArray },
+          },
+        },
+        {
+          new: true,
+          populate: 'positions candidates',
+        }
+      );
     } catch (error) {
       console.error(error);
     }
@@ -97,6 +107,8 @@ export class ElectionService {
         });
       }
 
+      const newPostions: string[] = [];
+
       // loop through the others not saved, save them and
 
       for (let i = 0; i < positionsWithNoIds.length; i++) {
@@ -105,15 +117,28 @@ export class ElectionService {
         newPost.election = id;
 
         // push their ids to the foundElection.positions array
-        foundElection.positions.push(newPost._id);
+        newPostions.push(newPost._id);
 
         await newPost.save();
       }
 
-      // finally save the foundElection or update it.
-      await foundElection.save();
-
-      return this.getElection(id);
+      // finally update the election with the new positions just added
+      return this.electionModel
+        .findByIdAndUpdate(
+          id,
+          {
+            $addToSet: {
+              positions: { $each: newPostions },
+            },
+          },
+          {
+            new: true,
+          }
+        )
+        .populate({
+          path: 'positions candidates',
+          populate: 'candidates',
+        });
     } catch (error) {
       console.log(error);
     }
@@ -122,19 +147,24 @@ export class ElectionService {
   async getElections(): Promise<ElectionDocument[]> {
     return this.electionModel.find().populate({
       path: 'positions candidates',
+      populate: {
+        path: 'candidates',
+      },
     });
   }
 
   async getElection(electionId: string) {
     return this.electionModel.findById(electionId).populate({
       path: 'positions candidates',
+      populate: {
+        path: 'candidates',
+      },
     });
   }
 
   async removePosition(electionID: string, positions: string[]) {
     try {
-      // const foundElection =
-
+      const removedPositions: string[] = [];
       for (let i = 0; i < positions.length; i++) {
         // check each positions exists
         const foundPosition = await this.positionModel.findOne({
@@ -145,22 +175,37 @@ export class ElectionService {
         if (foundPosition) {
           // check if positions has candidates assigned
           if (foundPosition.candidates.length >= 1) {
-            // remove candidates
+            // update the candidate's document and set position = ''
+            for (let i = 0; i < foundPosition.candidates.length; i++) {
+              const canId = foundPosition.candidates[i];
+              await this.candidateModel.findByIdAndUpdate(canId, {
+               $unset: {
+                 position: true
+               }
+              });
+            }
           }
 
           // remove this position
           await foundPosition.remove();
           // update foundElection
 
-          await this.electionModel.findByIdAndUpdate(electionID, {
-            $pull: {
-              positions: foundPosition._id,
-            },
-          });
+          removedPositions.push(foundPosition._id);
         }
       }
 
-      return this.getElection(electionID);
+      return await this.electionModel
+        .findByIdAndUpdate(electionID, {
+          $pullAll: {
+            positions: removedPositions,
+          },
+        })
+        .populate({
+          path: 'positions candidates',
+          populate: {
+            path: 'candidates',
+          },
+        });
     } catch (error) {
       console.log(error);
     }
@@ -171,9 +216,9 @@ export class ElectionService {
     createCandidatesDto: CreateCandidateDto
   ) {
     const { candidates } = createCandidatesDto;
+    const candidateIDsArray: string[] = [];
 
     try {
-      const candidateIDsArray: string[] = [];
       for (let i = 0; i < candidates.length; i++) {
         const candidateData = candidates[i];
 
@@ -213,13 +258,24 @@ export class ElectionService {
         await newCandidate.save();
       }
 
-      await this.electionModel.findByIdAndUpdate(electionID, {
-        $addToSet: {
-          candidates: { $each: candidateIDsArray },
-        },
-      });
-
-      return await this.getElection(electionID);
+      return await this.electionModel
+        .findByIdAndUpdate(
+          electionID,
+          {
+            $addToSet: {
+              candidates: { $each: candidateIDsArray },
+            },
+          },
+          {
+            new: true,
+          }
+        )
+        .populate({
+          path: 'positions candidates',
+          populate: {
+            path: 'candidates',
+          },
+        });
     } catch (error) {
       console.log(error);
     }

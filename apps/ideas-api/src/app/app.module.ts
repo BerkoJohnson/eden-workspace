@@ -3,6 +3,7 @@ import {TypeOrmModule} from '@nestjs/typeorm';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { IdeaModule } from './idea/idea.module';
 
 @Module({
   imports: [TypeOrmModule.forRoot({
@@ -14,8 +15,8 @@ import { AppService } from './app.service';
     database: 'ideas',
     synchronize: true,
     logging: true,
-    entities: ["./app/**/*.entity.ts"]
-  })],
+    autoLoadEntities: true
+  }), IdeaModule],
   controllers: [AppController],
   providers: [AppService],
 })

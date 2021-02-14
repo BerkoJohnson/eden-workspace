@@ -22,6 +22,22 @@ export const initialState: State = {
 
 export const reducer = createReducer(
   initialState,
+  on(ElectionsActions.CreateNewElectionSuccess, (state, { election }) => {
+    return {
+      ...state,
+      currentElection: election._id,
+      currentPosition: null,
+      lists: [...state.lists, election],
+    };
+  }),
+  on(ElectionsActions.CreateNewElectionFailure, (state, { error }) => {
+    return {
+      ...state,
+      error: error,
+      currentElection: null,
+      currentPosition: null,
+    };
+  }),
   on(ElectionsActions.loadElectionsSuccess, (state, { data }) => {
     return {
       ...state,
@@ -36,58 +52,64 @@ export const reducer = createReducer(
       error,
     };
   }),
-  on(ElectionsActions.markCurrentElection, (state, {election}) => {
+  on(ElectionsActions.markCurrentElection, (state, { election }) => {
     return {
       ...state,
-      currentElection: election
-    }
+      currentElection: election,
+    };
   }),
-  on(ElectionsActions.markCurrentPosition, (state, {position}) => {
+  on(ElectionsActions.markCurrentPosition, (state, { position }) => {
     return {
       ...state,
-      currentPosition: position
-    }
+      currentPosition: position,
+    };
   }),
-  on(ElectionsActions.removePostsSuccess, (state, {data}) => {
+  on(ElectionsActions.removePostsSuccess, (state, { data }) => {
     const updatedElections = state.lists.concat();
-    updatedElections[updatedElections.findIndex(elec => elec._id === data._id)] = data
+    updatedElections[
+      updatedElections.findIndex((elec) => elec._id === data._id)
+    ] = data;
     return {
       ...state,
-      lists: updatedElections
-    }
+      lists: updatedElections,
+    };
   }),
-  on(ElectionsActions.removePostsFailure, (state, {error}) => {
+  on(ElectionsActions.removePostsFailure, (state, { error }) => {
     return {
       ...state,
-      error
-    }
+      error,
+    };
   }),
-  on(ElectionsActions.updateElectionSuccess, (state, {election}) => {
+  on(ElectionsActions.updateElectionSuccess, (state, { election }) => {
     const updatedElections = state.lists.concat();
-    updatedElections[updatedElections.findIndex(elec => elec._id === election._id)] = election
+    updatedElections[
+      updatedElections.findIndex((elec) => elec._id === election._id)
+    ] = election;
     return {
       ...state,
-      lists: updatedElections
-    }
+      lists: updatedElections,
+    };
   }),
-  on(ElectionsActions.updateElectionFailure, (state, {error}) => {
+  on(ElectionsActions.updateElectionFailure, (state, { error }) => {
     return {
       ...state,
-      error
-    }
+      error,
+    };
   }),
-  on(ElectionsActions.addCandidateSuccess, (state, {election}) => {
+  on(ElectionsActions.addCandidateSuccess, (state, { election }) => {
     const updatedElections = state.lists.concat();
-    updatedElections[updatedElections.findIndex(elec => elec._id === election._id)] = election
+    updatedElections[
+      updatedElections.findIndex((elec) => elec._id === election._id)
+    ] = election;
     return {
       ...state,
-      lists: updatedElections
-    }
+      lists: updatedElections,
+    };
   }),
-  on(ElectionsActions.addCandidateFailure, (state, {error}) => {
+  on(ElectionsActions.addCandidateFailure, (state, { error }) => {
     return {
       ...state,
-      error
-    }
-  }),
+      error,
+    };
+  })
 );

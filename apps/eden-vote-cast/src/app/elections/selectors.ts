@@ -1,4 +1,5 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
+
 import * as fromElections from './elections.reducer';
 
 export const selectElectionState = createFeatureSelector<fromElections.State>(

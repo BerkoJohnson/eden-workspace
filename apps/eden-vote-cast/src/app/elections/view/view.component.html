@@ -1,91 +1,42 @@
 <div class="card" *ngIf="selectedElection$ | async as election">
-  <div class="card-header d-flex justify-content-between align-items-center">
+  <div class="card-header">
     <h6>Viewing Election Details</h6>
-    <a class="btn btn-sm btn-outline-secondary" routerLink="/elections/edit">
-      <span><i class="bi-pencil-square"></i> Update</span></a
-    >
   </div>
   <div class="card-body">
-    <div class="w-100">
+    <div class="">
       <div>
-        Title:
-        <h6>{{ election?.title }}</h6>
+        <b><em>Title:</em></b>
+        <h6 class="text-uppercase">{{ election?.title }}</h6>
       </div>
       <div>
-        Academic Year:
+        <b><em>Academic Year:</em></b>
         <h6>
           {{ election?.academicYear }}
         </h6>
       </div>
-    </div>
-    <div>
-      <h6 class="text-uppercase text-white mt-4 bg-dark p-2">
-        Saved Positions
-      </h6>
-
-      <ul class="list-group" *ngIf="election.positions.length;else no_positions">
-        <li
-          *ngFor="let pos of election?.positions; trackBy: trackByKey"
-          class="list-group-item d-flex justify-content-between align-items-center"
-        >
-          <div class="form-check form-switch">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              [id]="pos._id"
-              (change)="markPost($event.target.checked, pos._id)"
-            />
-            <label class="form-check-label" [for]="pos._id">{{
-              pos?.pos_name
-            }}</label>
-          </div>
-          <div class="btn-group btn-sm">
-            <a title="View details" class="btn btn-sm btn-outline-primary" routerLink="../positions" (click)="markPosition(pos._id)">
-              <span><i class="bi-pencil"></i></span></a
-            ><button
-            [title]="'Remove '+ pos.pos_name "
-              class="btn btn-sm btn-outline-danger"
-              type="button"
-              (click)="removeMarkedPosts(election._id, pos._id)"
-            >
-              <span><i class="bi-trash"></i></span>
-            </button>
-          </div>
-        </li>
-      </ul>
-
-      <ng-template #no_positions>
+      <div>
+        <b><em>Positions Added:</em></b>
         <h6>
-          No positions yet. Click Update to add one.
+          {{ election?.positions.length }}
         </h6>
-      </ng-template>
-
-
-      <button
-        class="btn btn-sm btn-danger mt-2"
-        type="button"
-        *ngIf="markedPositions.length >= 1"
-        (click)="removeMarkedPosts(election._id)"
-      >
-        <span><i class="bi-trash"></i> Remove Positions</span>
-      </button>
+      </div>
+      <div>
+        <b><em>Candidates Added:</em></b>
+        <h6>
+          {{ election?.candidates.length }}
+        </h6>
+      </div>
     </div>
   </div>
   <div class="card-footer d-flex justify-content-between align-items-center">
-    <a class="btn btn-sm btn-outline-secondary" routerLink="/elections/edit">
+    <a class="btn btn-sm btn-primary" routerLink="./edit-election">
       <span><i class="bi-pencil-square"></i> Update</span></a
     >
-    <a class="btn btn-sm btn-outline-warning" routerLink="/elections/candidates">
+    <a
+      class="btn btn-sm btn-outline-warning"
+      routerLink="./candidates"
+    >
       <span>+Add Candidate</span></a
     >
-    <!-- <div class="">
-      <small class="text-muted">
-        <em>Last Updated:</em><br />
-        <b>
-          {{ election?.updatedAt | date: 'shortDate' }}
-          {{ election?.updatedAt | date: 'shortTime' }}
-        </b>
-      </small>
-    </div> -->
   </div>
 </div>

@@ -1,84 +1,44 @@
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { ICandidate, IPosition } from '../Election';
-import { selectMarkedPosition } from '../selectors';
+import { IElection } from '../Election';
+import { markCurrentPosition, removePosts } from '../elections.actions';
+import { selectMarkedElection } from '../selectors';
 
 @Component({
   selector: 'evc-positions',
   templateUrl: './positions.component.html',
-  styleUrls: ['./positions.component.scss'],
+  styleUrls: ['./positions.component.scss']
 })
 export class PositionsComponent implements OnInit {
-  selectedPosition$: Observable<IPosition>;
-  markedCandidates: string[] = [];
 
-  form = this.fb.group({
-    candidates: this.fb.array([]),
-  });
+  selectedElection$: Observable<IElection>;
+  constructor(private store: Store) {}
 
-  constructor(
-    private store: Store,
-    private fb: FormBuilder
-  ) {}
-
+  markedPositions: string[] = [];
   ngOnInit(): void {
-    this.selectedPosition$ = this.store.select(selectMarkedPosition);
+    this.selectedElection$ = this.store.select(selectMarkedElection);
   }
 
-  get candidatesArray() {
-    return this.form.get('candidates') as FormArray;
-  }
-
-  addCandidate() {
-    const group = this.fb.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      dob: ['', Validators.required],
-      gender: ['', Validators.required],
-      room: ['', Validators.required],
-      nickname: ['', Validators.required],
-      displayMessage: ['', Validators.required],
-    });
-
-    this.candidatesArray.push(group);
-  }
-
-  removeCandidate(index: number) {
-    this.candidatesArray.removeAt(index);
-  }
-
-  updatePosition(_id: string) {
-    if (this.form.invalid) {
-      return;
-    }
-
-  //  this.electionsService.addCandidates(_id, this.form.value).subscribe(d => console.log(d))
-  }
-
-  markCandidates(marked: boolean, candidateID: string) {
+  markPost(marked: boolean, postId: string) {
     if (marked) {
-      this.markedCandidates.push(candidateID);
+      this.markedPositions.push(postId);
     } else {
-      this.markedCandidates = this.markedCandidates.filter(
-        (c) => c !== candidateID
-      );
+      this.markedPositions = this.markedPositions.filter((p) => p !== postId);
     }
   }
 
-  trackByKey(index: number, obj: ICandidate) {
+  removeMarkedPosts(electionID: string, posId = '') {
+    const positionsArray = posId ? [posId] : this.markedPositions;
+
+    this.store.dispatch(removePosts({ electionID, positions: positionsArray }));
+  }
+
+  markPosition(posID: string) {
+    this.store.dispatch(markCurrentPosition({position: posID}));
+  }
+
+  trackByKey(index: number, obj: any) {
     return obj._id;
-  }
-
-  removeMarkedCandidates(positionID, candID = '') {
-    if (!candID) {
-      // delete all marked candidates
-      // this.electionsService.removePositions(electionID, this.markedPositions).subscribe(ps => {
-      // });
-    } else {
-      // const candArray = [candID];
-      // this.electionsService.removePositions(electionID, posArray).subscribe();
-    }
   }
 }

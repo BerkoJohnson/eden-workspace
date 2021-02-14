@@ -118,6 +118,16 @@
     "eden-vote-cast-e2e": {
       "tags": [],
       "implicitDependencies": ["eden-vote-cast"]
+    },
+    "edenpng": {
+      "tags": []
+    },
+    "edenpng-e2e": {
+      "tags": [],
+      "implicitDependencies": ["edenpng"]
+    },
+    "ideas-api": {
+      "tags": []
     }
   }
 }

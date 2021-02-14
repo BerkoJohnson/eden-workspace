@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { ElectionsService } from '../elections.service';
-
+import { Store } from '@ngrx/store';
+import { CreateNewElection } from '../elections.actions';
+import * as fromElections from '../elections.reducer';
 @Component({
   selector: 'evc-new-election',
   templateUrl: './new.component.html',
@@ -17,8 +17,7 @@ export class NewElectionComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private router: Router,
-    private electionsService: ElectionsService
+    private store: Store<fromElections.State>
   ) {}
 
   ngOnInit(): void {
@@ -48,11 +47,7 @@ export class NewElectionComponent implements OnInit {
       return;
     }
 
-    this.electionsService
-      .createElection(this.form.value)
-      .subscribe((res) => {
-        this.router.navigate(['elections/view']);
-      });
+    this.store.dispatch(CreateNewElection({election: this.form.value}))
   }
 
   get f() {

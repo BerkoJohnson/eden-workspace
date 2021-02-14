@@ -1,16 +1,21 @@
-<form class="card" [formGroup]="form" *ngIf="positions$ | async; else viewElection" (ngSubmit)="submit()">
+<form
+  class="card bg-dark text-white"
+  [formGroup]="form"
+  *ngIf="positions$ | async; else viewElection"
+  (ngSubmit)="submit()"
+>
   <div class="card-header d-flex justify-content-between align-items-center">
     <h6>Add Candidates</h6>
-    <a routerLink="../view" class="btn btn-sm btn-secondary">Back</a>
+    <a routerLink=".." class="btn btn-sm btn-secondary">Back</a>
   </div>
-  <div class="card-body">
+  <div class="card-body ">
     <h5 *ngIf="candidatesArray.length === 0">Click Add New to continue</h5>
     <ng-container
       formArrayName="candidates"
       *ngFor="let candGroup of candidatesArray.controls; let i = index"
     >
       <div [formGroup]="candGroup">
-        <div class="card mb-3">
+        <div class="card text-black-50 mb-3">
           <div
             class="card-header d-flex justify-content-between align-items-center"
           >
@@ -125,7 +130,6 @@
               </div>
             </div>
             <div class="row g-2 mb-2">
-
               <div class="col-sm-12">
                 <select
                   class="form-select form-select-sm"
@@ -133,7 +137,12 @@
                   formControlName="position"
                 >
                   <option value="" selected disabled>Position</option>
-                  <option *ngFor="let position of positions$ |async" [value]="position._id">{{position.pos_name}}</option>
+                  <option
+                    *ngFor="let position of positions$ | async"
+                    [value]="position._id"
+                  >
+                    {{ position.pos_name }}
+                  </option>
                 </select>
               </div>
               <div class="col-sm-12">
@@ -152,12 +161,16 @@
     </ng-container>
   </div>
   <div class="card-footer d-flex justify-content-between align-items-center">
-    <button class="btn btn-sm btn-outline-success" type="submit" [disabled]="form.invalid">
+    <button
+      class="btn btn-sm btn-success"
+      type="submit"
+      [disabled]="form.invalid"
+    >
       <span><i class="bi-pencil-square"></i> Submit</span>
     </button>
     <button
-      class="btn btn-sm btn-outline-primary"
-      type="buton"
+      class="btn btn-sm btn-primary"
+      type="button"
       (click)="addCandidateGroup()"
       [disabled]="form.invalid"
     >
@@ -167,5 +180,6 @@
 </form>
 
 <ng-template #viewElection>
-  Select an election first <a routerLink="../view" class="btn btn-sm btn-dark">Go Back</a>
+  Select an election first
+  <a routerLink="../view" class="btn btn-sm btn-dark">Go Back</a>
 </ng-template>

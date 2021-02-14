@@ -17,6 +17,7 @@ import { StoreModule } from '@ngrx/store';
 import * as fromElections from './elections.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { ElectionEffects } from './election.effects';
+import { PositionDetailsComponent } from './position-details/position-details.component';
 
 const routes: Routes = [
   {
@@ -25,10 +26,17 @@ const routes: Routes = [
     children: [
       { path: '', component: ElectionsHomeComponent },
       { path: 'new', component: NewElectionComponent },
-      { path: 'edit', component: EditElectionComponent },
-      { path: 'view', component: ViewElectionComponent },
-      { path: 'positions', component: PositionsComponent },
-      { path: 'candidates', component: CandidatesComponent },
+      {
+        path: ':id',
+        component: ElectionsHomeComponent,
+        children: [
+          { path: '', component: PositionsComponent },
+          { path: 'position-details', component: PositionDetailsComponent },
+          { path: 'edit-election', component: EditElectionComponent },
+          // { path: 'view-details', component: ViewElectionComponent },
+          { path: 'candidates', component: CandidatesComponent },
+        ],
+      },
     ],
   },
 ];
@@ -43,6 +51,7 @@ const routes: Routes = [
     EditElectionComponent,
     CandidatesComponent,
     PositionsComponent,
+    PositionDetailsComponent,
   ],
   imports: [
     CommonModule,
@@ -50,9 +59,11 @@ const routes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
-    StoreModule.forFeature(fromElections.electionsFeatureKey, fromElections.reducer),
+    StoreModule.forFeature(
+      fromElections.electionsFeatureKey,
+      fromElections.reducer
+    ),
     EffectsModule.forFeature([ElectionEffects]),
-
   ],
   exports: [RouterModule],
   providers: [ElectionsService],

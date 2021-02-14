@@ -19,7 +19,7 @@ import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 // import { environment } from '../environments/environment';
-import { ROOT_REDUCERS,metaReducers } from './reducers';
+import { reducers, metaReducers } from './store';
 // import { RouterEffects } from './effects/router.effects';
 
 @NgModule({
@@ -37,17 +37,18 @@ import { ROOT_REDUCERS,metaReducers } from './reducers';
     AuthModule,
     HttpClientModule,
     SharedModule,
-    StoreModule.forRoot(ROOT_REDUCERS, {
+    StoreModule.forRoot(reducers, {
       metaReducers,
       runtimeChecks: {
-        // strictStateImmutability and strictActionImmutability are enabled by default
         strictStateSerializability: true,
         strictActionSerializability: true,
         strictActionWithinNgZone: true,
         strictActionTypeUniqueness: true,
       },
     }),
-    StoreRouterConnectingModule.forRoot(),
+    StoreRouterConnectingModule.forRoot({
+      // serializer: CustomSerializer
+    }),
     StoreDevtoolsModule.instrument({
       name: 'EdenVote',
     }),

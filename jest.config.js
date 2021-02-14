@@ -14,5 +14,7 @@ module.exports = {
     '<rootDir>/apps/material-test-app',
     '<rootDir>/apps/eden-dashboard-app',
     '<rootDir>/apps/eden-vote-cast',
+    '<rootDir>/apps/edenpng',
+    '<rootDir>/apps/ideas-api',
   ],
 };

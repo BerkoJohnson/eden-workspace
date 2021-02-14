@@ -7,12 +7,14 @@ import {
   mergeMap,
   tap,
   switchMap,
+  filter,
 } from 'rxjs/operators';
 import { of } from 'rxjs';
 
 import * as ElectionActions from './elections.actions';
 import { ElectionsService } from './elections.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { RouterNavigatedAction, ROUTER_NAVIGATION } from '@ngrx/router-store';
 
 @Injectable()
 export class ElectionEffects {
@@ -40,7 +42,8 @@ export class ElectionEffects {
           ),
           catchError((error) =>
             of(ElectionActions.CreateNewElectionFailure({ error }))
-          )
+          ),
+          tap(() => this.router.navigate(['elections/view']))
         )
       )
     )
@@ -85,12 +88,27 @@ export class ElectionEffects {
           .addCandidates(candidates, electionID)
           .pipe(map(() => ElectionActions.loadElections()))
       )
+      // tap(() => this.router.navigate(['../view'], {relativeTo: this.activatedRoute}))
     )
   );
+
+  // setCurrentElection$ = createEffect(() =>
+  //   this.actions$.pipe(
+  //     ofType(ROUTER_NAVIGATION),
+  //     filter((r: RouterNavigatedAction) => r.payload.routerState.url.startsWith('/elections'),
+  //     map((r: RouterNavigatedAction) => r.payload.routerState['params']['id']),
+  //     switchMap((id) => {
+  //       return this.electionService.getElection(id).pipe(
+  //         map(el => ElectionActions.markCurrentElection({ election: el }))
+  //       );
+  //     })
+  //   )
+  // ));
 
   constructor(
     private actions$: Actions,
     private electionService: ElectionsService,
-    private router: Router
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) {}
 }

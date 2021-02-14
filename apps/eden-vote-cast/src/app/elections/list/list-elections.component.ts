@@ -20,7 +20,7 @@ export class ListElectionsComponent {
   constructor(private router: Router) {}
 
 
-  view() {
-    this.router.navigate(['/elections/view']);
+  view(id: string) {
+    this.router.navigate(['elections',id]);
   }
 }

@@ -1345,8 +1345,8 @@
                 "input": "node_modules/bootstrap/dist/js/bootstrap.bundle.js",
                 "inject": false,
                 "bundleName": "bootstrap"
-               },
-               "node_modules/popper.js/dist/popper.min.js"
+              },
+              "node_modules/popper.js/dist/popper.min.js"
             ]
           },
           "configurations": {
@@ -1438,6 +1438,177 @@
           "builder": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["apps/eden-vote-cast-e2e/**/*.{js,ts}"]
+          }
+        }
+      }
+    },
+    "edenpng": {
+      "projectType": "application",
+      "root": "apps/edenpng",
+      "sourceRoot": "apps/edenpng/src",
+      "prefix": "epg",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/apps/edenpng",
+            "index": "apps/edenpng/src/index.html",
+            "main": "apps/edenpng/src/main.ts",
+            "polyfills": "apps/edenpng/src/polyfills.ts",
+            "tsConfig": "apps/edenpng/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "apps/edenpng/src/favicon.ico",
+              "apps/edenpng/src/assets"
+            ],
+            "styles": [
+              "apps/edenpng/src/styles.scss",
+              "node_modules/primeicons/primeicons.css",
+              "node_modules/primeng/resources/themes/saga-blue/theme.css",
+              "node_modules/primeng/resources/primeng.min.css",
+              "node_modules/primeflex/primeflex.css"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/edenpng/src/environments/environment.ts",
+                  "with": "apps/edenpng/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "edenpng:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "edenpng:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "edenpng:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/edenpng/src/**/*.ts",
+              "apps/edenpng/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/edenpng"],
+          "options": {
+            "jestConfig": "apps/edenpng/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "edenpng-e2e": {
+      "root": "apps/edenpng-e2e",
+      "sourceRoot": "apps/edenpng-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/edenpng-e2e/cypress.json",
+            "tsConfig": "apps/edenpng-e2e/tsconfig.e2e.json",
+            "devServerTarget": "edenpng:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "edenpng:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/edenpng-e2e/**/*.{js,ts}"]
+          }
+        }
+      }
+    },
+    "ideas-api": {
+      "root": "apps/ideas-api",
+      "sourceRoot": "apps/ideas-api/src",
+      "projectType": "application",
+      "prefix": "ideas-api",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/node:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/ideas-api",
+            "main": "apps/ideas-api/src/main.ts",
+            "tsConfig": "apps/ideas-api/tsconfig.app.json",
+            "assets": ["apps/ideas-api/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/ideas-api/src/environments/environment.ts",
+                  "with": "apps/ideas-api/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "ideas-api:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/ideas-api/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/ideas-api"],
+          "options": {
+            "jestConfig": "apps/ideas-api/jest.config.js",
+            "passWithNoTests": true
           }
         }
       }

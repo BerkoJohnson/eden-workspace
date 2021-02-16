@@ -1,23 +1,41 @@
 import { Module } from '@nestjs/common';
-import {TypeOrmModule} from '@nestjs/typeorm';
+import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule } from '@nestjs/config';
 
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { IdeaModule } from './idea/idea.module';
+import { HttpErrorFilter } from './shared/http-err.filter';
+import { LoggingInterceptor } from './shared/logging.interceptor';
+import { UserModule } from './user/user.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot({
-    type: 'postgres',
-    host: 'localhost',
-    port: 5432,
-    username: 'berkojohnson',
-    password: 'berko391!!',
-    database: 'ideas',
-    synchronize: true,
-    logging: true,
-    autoLoadEntities: true
-  }), IdeaModule],
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: 'localhost',
+      username: 'berkojohnson',
+      password: 'berko391!!',
+      database: 'ideas',
+      port: 5432,
+      synchronize: true,
+      logging: true,
+      autoLoadEntities: true
+    }),
+    IdeaModule,
+    UserModule,
+  ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    {
+      provide: APP_FILTER,
+      useClass: HttpErrorFilter,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: LoggingInterceptor,
+    },
+  ],
 })
 export class AppModule {}

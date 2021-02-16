@@ -1,0 +1,15 @@
+{
+  "type": "postgres",
+  "host": "localhost",
+  "username": "berkojohnson",
+  "password": "berko391!!",
+  "database": "ideas",
+  "port": 5432,
+  "synchronize": true,
+  "logging": true,
+  "entities": ["dist/apps/ideas-api/**/*.entity.js"],
+  "cli": {
+    "entitiesDir": "apps/ideas-api/src/"
+  }
+
+}

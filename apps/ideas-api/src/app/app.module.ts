@@ -17,7 +17,7 @@ import { UserModule } from './user/user.module';
       host: 'localhost',
       username: 'berkojohnson',
       password: 'berko391!!',
-      database: 'ideas',
+      database: 'ideasdb',
       port: 5432,
       synchronize: true,
       logging: true,

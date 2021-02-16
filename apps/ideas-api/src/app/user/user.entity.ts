@@ -10,7 +10,7 @@ import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
 import { UserRO } from './user.dto';
 
-@Entity('user')
+@Entity('users')
 export class UserEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;

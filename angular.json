@@ -1421,106 +1421,6 @@
         }
       }
     },
-    "eden-vote-cast": {
-      "projectType": "application",
-      "root": "apps/eden-vote-cast",
-      "sourceRoot": "apps/eden-vote-cast/src",
-      "prefix": "evc",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-angular:browser",
-          "options": {
-            "outputPath": "dist/apps/eden-vote-cast",
-            "index": "apps/eden-vote-cast/src/index.html",
-            "main": "apps/eden-vote-cast/src/main.ts",
-            "polyfills": "apps/eden-vote-cast/src/polyfills.ts",
-            "tsConfig": "apps/eden-vote-cast/tsconfig.app.json",
-            "aot": true,
-            "assets": [
-              "apps/eden-vote-cast/src/favicon.ico",
-              "apps/eden-vote-cast/src/assets"
-            ],
-            "styles": [
-              "apps/eden-vote-cast/src/styles.scss"
-            ],
-            "scripts": [
-              {
-                "input": "node_modules/bootstrap/dist/js/bootstrap.bundle.js",
-                "inject": false,
-                "bundleName": "bootstrap"
-              },
-              "node_modules/popper.js/dist/popper.min.js"
-            ]
-          },
-          "configurations": {
-            "production": {
-              "fileReplacements": [
-                {
-                  "replace": "apps/eden-vote-cast/src/environments/environment.ts",
-                  "with": "apps/eden-vote-cast/src/environments/environment.prod.ts"
-                }
-              ],
-              "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "namedChunks": false,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "5mb"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "6kb",
-                  "maximumError": "10kb"
-                }
-              ]
-            }
-          }
-        },
-        "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
-          "options": {
-            "browserTarget": "eden-vote-cast:build",
-            "proxyConfig": "apps/eden-vote-cast/proxy.conf.json"
-          },
-          "configurations": {
-            "production": {
-              "browserTarget": "eden-vote-cast:build:production"
-            }
-          }
-        },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
-          "options": {
-            "browserTarget": "eden-vote-cast:build"
-          }
-        },
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": [
-              "apps/eden-vote-cast/src/**/*.ts",
-              "apps/eden-vote-cast/src/**/*.html"
-            ]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": [
-            "coverage/apps/eden-vote-cast"
-          ],
-          "options": {
-            "jestConfig": "apps/eden-vote-cast/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      }
-    },
     "eden-vote-cast-e2e": {
       "root": "apps/eden-vote-cast-e2e",
       "sourceRoot": "apps/eden-vote-cast-e2e/src",
@@ -1531,11 +1431,11 @@
           "options": {
             "cypressConfig": "apps/eden-vote-cast-e2e/cypress.json",
             "tsConfig": "apps/eden-vote-cast-e2e/tsconfig.e2e.json",
-            "devServerTarget": "eden-vote-cast:serve"
+            "devServerTarget": "edenapp:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "eden-vote-cast:serve:production"
+              "devServerTarget": "edenapp:serve:production"
             }
           }
         },
@@ -1727,6 +1627,106 @@
           ],
           "options": {
             "jestConfig": "apps/ideas-api/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "edenapp": {
+      "projectType": "application",
+      "root": "apps/edenapp",
+      "sourceRoot": "apps/edenapp/src",
+      "prefix": "evc",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/apps/edenapp",
+            "index": "apps/edenapp/src/index.html",
+            "main": "apps/edenapp/src/main.ts",
+            "polyfills": "apps/edenapp/src/polyfills.ts",
+            "tsConfig": "apps/edenapp/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "apps/edenapp/src/favicon.ico",
+              "apps/edenapp/src/assets"
+            ],
+            "styles": [
+              "apps/edenapp/src/styles.scss"
+            ],
+            "scripts": [
+              {
+                "input": "node_modules/bootstrap/dist/js/bootstrap.bundle.js",
+                "inject": false,
+                "bundleName": "bootstrap"
+              },
+              "node_modules/popper.js/dist/popper.min.js"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/edenapp/src/environments/environment.ts",
+                  "with": "apps/edenapp/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "edenapp:build",
+            "proxyConfig": "apps/edenapp/proxy.conf.json"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "edenapp:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "edenapp:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/edenapp/src/**/*.ts",
+              "apps/edenapp/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/apps/edenapp"
+          ],
+          "options": {
+            "jestConfig": "apps/edenapp/jest.config.js",
             "passWithNoTests": true
           }
         }

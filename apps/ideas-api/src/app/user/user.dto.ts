@@ -1,4 +1,5 @@
-import { IsNotEmpty, IsString, ValidationArguments } from 'class-validator';
+import { IsNotEmpty, ValidationArguments } from 'class-validator';
+import { IdeaRO } from '../idea/idea.dto';
 
 export class UserDto {
   @IsNotEmpty({
@@ -21,4 +22,5 @@ export class UserRO {
   username: string;
   created: Date;
   token?: string;
+  ideas: IdeaRO[]
 }

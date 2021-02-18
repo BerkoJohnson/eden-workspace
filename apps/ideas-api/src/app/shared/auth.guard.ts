@@ -5,6 +5,7 @@ import {
   ForbiddenException,
 } from '@nestjs/common';
 import * as jwt from 'jsonwebtoken';
+import { UserRO } from '../user/user.dto';
 @Injectable()
 export class AuthGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -28,8 +29,8 @@ export class AuthGuard implements CanActivate {
 
 
     try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-  
+      const decoded: UserRO = jwt.verify(token, process.env.JWT_SECRET) as UserRO;
+
       return decoded;
     } catch (err) {
       const message = 'Token error: ' + (err.message || err.name);

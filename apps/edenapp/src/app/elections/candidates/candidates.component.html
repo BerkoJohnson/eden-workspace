@@ -1,0 +1,147 @@
+<form
+  class="card bg-dark text-white"
+  [formGroup]="form"
+  *ngIf="positions$ | async; else viewElection"
+  (ngSubmit)="submit()"
+>
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <h6>Adding New Candidate</h6>
+    <a routerLink=".." class="btn btn-sm btn-secondary">Back</a>
+  </div>
+  <div class="card-body">
+    <div class="row g-2 mb-2">
+      <div class="col-sm-12">
+        <input
+          type="text"
+          class="form-control form-control-sm"
+          name="firstName"
+          id="firstName"
+          #first
+          placeholder="First Name"
+          formControlName="firstName"
+          [ngClass]="{
+            'is-invalid':
+              candGroup.get('firstName').invalid &&
+              (candGroup.get('firstName').dirty ||
+                candGroup.get('firstName').touched)
+          }"
+        />
+      </div>
+      <div class="col-sm-12">
+        <input
+          type="text"
+          class="form-control form-control-sm"
+          name="lastName"
+          #last
+          placeholder="Last Name"
+          formControlName="lastName"
+          [ngClass]="{
+            'is-invalid':
+              candGroup.get('lastName').invalid &&
+              (candGroup.get('lastName').dirty ||
+                candGroup.get('lastName').touched)
+          }"
+        />
+      </div>
+    </div>
+    <div class="row g-2 mb-2">
+      <div class="col-sm-7">
+        <input
+          type="date"
+          class="form-control-sm form-control"
+          name="dob"
+          placeholder="Date of Birth"
+          formControlName="dob"
+          [ngClass]="{
+            'is-invalid':
+              candGroup.get('dob').invalid &&
+              (candGroup.get('dob').dirty || candGroup.get('dob').touched)
+          }"
+        />
+      </div>
+      <div class="col-sm-5">
+        <select
+          class="form-select form-select-sm"
+          aria-label="gender"
+          formControlName="gender"
+        >
+          <option value="" selected disabled>Gender</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+        </select>
+      </div>
+    </div>
+    <div class="row g-2 mb-2">
+      <div class="col-sm-7">
+        <input
+          type="type"
+          class="form-control-sm form-control"
+          name="nickname"
+          placeholder="Nickname"
+          formControlName="nickname"
+          [ngClass]="{
+            'is-invalid':
+              candGroup.get('nickname').invalid &&
+              (candGroup.get('nickname').dirty ||
+                candGroup.get('nickname').touched)
+          }"
+        />
+      </div>
+      <div class="col-sm-5">
+        <select
+          class="form-select form-select-sm"
+          aria-label="rooms"
+          formControlName="room"
+        >
+          <option value="" selected disabled>Room</option>
+          <option value="2A1">2A1</option>
+          <option value="2A2">2A2</option>
+          <option value="2A3">2A3</option>
+          <option value="2B1">2B1</option>
+          <option value="2B2">2B2</option>
+          <option value="2C1">2C1</option>
+        </select>
+      </div>
+    </div>
+    <div class="row g-2 mb-2">
+      <div class="col-sm-12">
+        <select
+          class="form-select form-select-sm"
+          aria-label="position"
+          formControlName="position"
+        >
+          <option value="" selected disabled>Position</option>
+          <option
+            *ngFor="let position of positions$ | async"
+            [value]="position._id"
+          >
+            {{ position.pos_name }}
+          </option>
+        </select>
+      </div>
+      <div class="col-sm-12">
+        <textarea
+          class="form-control form-control-sm"
+          name="displayMessage"
+          formControlName="displayMessage"
+          rows="2"
+          placeholder="Add a small message to show voters"
+        ></textarea>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer">
+    <button
+      class="btn btn-sm btn-success"
+      type="submit"
+      [disabled]="form.invalid"
+    >
+      <span><i class="bi-pencil-square"></i> Submit</span>
+    </button>
+  </div>
+</form>
+
+<ng-template #viewElection>
+  Select an election first
+  <a routerLink="../view" class="btn btn-sm btn-dark">Go Back</a>
+</ng-template>

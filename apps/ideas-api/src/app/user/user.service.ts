@@ -6,6 +6,9 @@ import { UserEntity } from './user.entity';
 
 @Injectable()
 export class UserService {
+  async findById(userId: string) {
+    return await this.userRepository.findOne({where: {id: userId}});
+  }
   constructor(
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
@@ -18,7 +21,7 @@ export class UserService {
       throw new BadRequestException('Invalid Username/Password');
     }
 
-    return user.toResponseObject(false);
+    return user.toResponseObject();
   }
 
   async register(data: UserDto): Promise<UserRO> {
@@ -37,7 +40,8 @@ export class UserService {
   }
 
   async showAllUsers(): Promise<UserRO[]> {
-    const users = await this.userRepository.find();
+
+    const users = await this.userRepository.find({relations: ['ideas']});
     return users.map(user => user.toResponseObject(false));
   }
 }

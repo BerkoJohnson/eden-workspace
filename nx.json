@@ -19,140 +19,15 @@
       "runner": "@nrwl/nx-cloud",
       "options": {
         "accessToken": "MjE4ZmQ1ZDktNWM1My00YTcxLWI1MTktYWM4MjgzYjU0MDcxfHJlYWQtd3JpdGU=",
-        "cacheableOperations": [
-          "build",
-          "test",
-          "lint",
-          "e2e"
-        ],
+        "cacheableOperations": ["build", "test", "lint", "e2e"],
         "canTrackAnalytics": false,
         "showUsageWarnings": true
       }
     }
   },
   "projects": {
-    "voting-app": {
-      "tags": []
-    },
-    "voting-app-e2e": {
-      "tags": [],
-      "implicitDependencies": [
-        "voting-app"
-      ]
-    },
     "api": {
       "tags": []
-    },
-    "api-interfaces": {
-      "tags": []
-    },
-    "pw": {
-      "tags": []
-    },
-    "pw-e2e": {
-      "tags": [],
-      "implicitDependencies": [
-        "pw"
-      ]
-    },
-    "card": {
-      "tags": []
-    },
-    "card-e2e": {
-      "tags": [],
-      "implicitDependencies": [
-        "card"
-      ]
-    },
-    "typing": {
-      "tags": []
-    },
-    "typing-e2e": {
-      "tags": [],
-      "implicitDependencies": [
-        "typing"
-      ]
-    },
-    "pipes": {
-      "tags": []
-    },
-    "pipes-e2e": {
-      "tags": [],
-      "implicitDependencies": [
-        "pipes"
-      ]
-    },
-    "pages": {
-      "tags": []
-    },
-    "pages-e2e": {
-      "tags": [],
-      "implicitDependencies": [
-        "pages"
-      ]
-    },
-    "comps": {
-      "tags": []
-    },
-    "comps-e2e": {
-      "tags": [],
-      "implicitDependencies": [
-        "comps"
-      ]
-    },
-    "shared": {
-      "tags": []
-    },
-    "grid-things": {
-      "tags": []
-    },
-    "grid-things-e2e": {
-      "tags": [],
-      "implicitDependencies": [
-        "grid-things"
-      ]
-    },
-    "wsearch": {
-      "tags": []
-    },
-    "wsearch-e2e": {
-      "tags": [],
-      "implicitDependencies": [
-        "wsearch"
-      ]
-    },
-    "material-test-app": {
-      "tags": []
-    },
-    "material-test-app-e2e": {
-      "tags": [],
-      "implicitDependencies": [
-        "material-test-app"
-      ]
-    },
-    "eden-dashboard-app": {
-      "tags": []
-    },
-    "eden-dashboard-app-e2e": {
-      "tags": [],
-      "implicitDependencies": [
-        "eden-dashboard-app"
-      ]
-    },
-    "eden-vote-cast-e2e": {
-      "tags": [],
-      "implicitDependencies": [
-        "edenapp"
-      ]
-    },
-    "edenpng": {
-      "tags": []
-    },
-    "edenpng-e2e": {
-      "tags": [],
-      "implicitDependencies": [
-        "edenpng"
-      ]
     },
     "ideas-api": {
       "tags": []

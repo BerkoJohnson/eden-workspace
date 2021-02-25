@@ -1,4 +1,4 @@
-<div class="card" *ngIf="selectedElection$ | async as election">
+<div class="card" *ngIf="election$ | async as election">
   <div class="card-header">
     <h6>Viewing Election Details</h6>
   </div>
@@ -28,15 +28,9 @@
       </div>
     </div>
   </div>
-  <div class="card-footer d-flex justify-content-between align-items-center">
-    <a class="btn btn-sm btn-primary" routerLink="./edit-election">
+  <div class="card-footer">
+    <a class="btn btn-sm btn-primary" routerLink="edit-election">
       <span><i class="bi-pencil-square"></i> Update</span></a
-    >
-    <a
-      class="btn btn-sm btn-outline-warning"
-      routerLink="./candidates"
-    >
-      <span>+Add Candidate</span></a
     >
   </div>
 </div>

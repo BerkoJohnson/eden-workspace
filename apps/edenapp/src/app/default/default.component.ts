@@ -1,35 +1,31 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { AuthService } from '../auth/auth.service';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 import { Links } from '../models/Link';
-import { ROLES } from '../models/roles.enum';
+import { AuthenticatedUser } from '../models/user';
+import { LogoutUser } from '../store/actions/auth.action';
+import { AppState } from '../store/app-store.module';
 
 @Component({
   selector: 'evc-default',
   templateUrl: './default.component.html',
   styleUrls: ['./default.component.scss'],
 })
-export class DefaultComponent implements OnInit{
+export class DefaultComponent implements OnInit {
   links: Links = [
-    {href: 'users', title: 'Users'},
-    {href: 'elections', title: 'Elections'},
-    {href: 'settings', title: 'School Setup'},
+    { href: 'users', title: 'Users' },
+    { href: 'elections', title: 'Elections' },
+    { href: 'settings', title: 'School Setup' },
   ];
 
-  user: {email: string, role: ROLES}
-  constructor(private auth: AuthService, private router: Router) { }
+  user$: Observable<AuthenticatedUser>;
+  constructor(private store: Store<AppState>) {}
 
   ngOnInit(): void {
-    this.user = this.auth.user;
+    this.user$ = this.store.select(state => state.authState.user);
   }
 
-
-
   logout() {
-    this.auth.logout().subscribe(bol => {
-      if(bol) {
-        this.router.navigate(['/login']);
-      }
-    })
+    this.store.dispatch(LogoutUser());
   }
 }

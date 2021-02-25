@@ -16,11 +16,10 @@ import { AuthService } from './auth.service';
 export class RoleAccessGuard implements CanActivate {
   constructor(
     private readonly authService: AuthService,
-    private router: Router
+    private router: Router,
   ) {}
   canActivate(
     route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
   ):
     | Observable<boolean | UrlTree>
     | Promise<boolean | UrlTree>
@@ -29,9 +28,9 @@ export class RoleAccessGuard implements CanActivate {
     const roles = (route.data?.roles as ROLES[]) || [];
     const redirectUrl = route.data?.redirectUrl || '';
 
-    const user = this.authService.validateUser();
+    const user = this.authService.token_payload;
 
-    const hasAccess = roles.some((role) => user.role === role);
+    const hasAccess = roles.some(role => user.role === role);
 
     if (!hasAccess) {
       this.router.navigate([`/${redirectUrl}`]);

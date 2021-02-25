@@ -50,8 +50,9 @@
     </button>
     <ng-container
       *ngFor="let posGroup of positionsArray.controls; let i = index"
+      formArrayName="positions"
     >
-      <div [formGroup]="posGroup">
+      <div [formGroupName]="i">
         <input type="hidden" formControlName="_id" #_id />
         <div class="input-group mt-2">
           <span class="input-group-text">{{ i + 1 }}</span>
@@ -65,9 +66,9 @@
             [ngClass]="{
               'is-invalid':
                 submitted &&
-                posGroup.get('pos_name').invalid &&
-                (posGroup.get('pos_name').dirty ||
-                  posGroup.get('pos_name').touched)
+                form.get(['positions', i, 'pos_name']).invalid &&
+                (form.get(['positions', i, 'pos_name']).dirty ||
+                  form.get(['positions', i, 'pos_name']).touched)
             }"
           />
           <button

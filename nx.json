@@ -1,5 +1,5 @@
 {
-  "npmScope": "eden-workspace",
+  "npmScope": "eden",
   "affected": {
     "defaultBase": "master"
   },

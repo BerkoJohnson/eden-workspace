@@ -3,10 +3,9 @@ import { FormArray, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
 import { ICandidate, IPosition } from '../Election';
 import { markCurrentPosition } from '../elections.actions';
-import { selectMarkedPosition } from '../selectors';
+import { selectMarkedPosition, selectPosition } from '../selectors';
 
 @Component({
   selector: 'evc-position-details',
@@ -30,15 +29,11 @@ export class PositionDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.route.paramMap.subscribe(params =>
       this.store.dispatch(
-        markCurrentPosition({ position: params.get('postId') }),
+        markCurrentPosition({ position: params.get('positionId') }),
       ),
     );
 
-    setTimeout(
-      () => (
-        (this.selectedPosition$ = this.store.select(selectMarkedPosition)), 2000
-      ),
-    );
+    this.selectedPosition$ = this.store.select(selectPosition);
   }
 
   get candidatesArray() {
@@ -95,6 +90,4 @@ export class PositionDetailsComponent implements OnInit {
       // this.electionsService.removePositions(electionID, posArray).subscribe();
     }
   }
-
-  setCurrentPostion() {}
 }

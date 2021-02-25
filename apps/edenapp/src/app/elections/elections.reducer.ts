@@ -1,5 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import { Elections } from './Election';
+import { Elections, IElection, IPosition } from './Election';
 import * as ElectionsActions from './elections.actions';
 
 export const electionsFeatureKey = 'elections';
@@ -8,6 +8,8 @@ export interface State {
   lists: Elections;
   currentElection: string;
   currentPosition: string;
+  election: IElection;
+  position: IPosition;
   listLoaded: boolean;
   error: any;
 }
@@ -16,6 +18,8 @@ export const initialState: State = {
   lists: [],
   currentElection: null,
   currentPosition: null,
+  election: null,
+  position: null,
   listLoaded: false,
   error: null,
 };
@@ -52,6 +56,18 @@ export const reducer = createReducer(
       error,
     };
   }),
+  on(ElectionsActions.getElectionSuccess, (state, { election }) => {
+    return {
+      ...state,
+      election,
+    };
+  }),
+  on(ElectionsActions.getElectionFailure, (state, { error }) => {
+    return {
+      ...state,
+      error,
+    };
+  }),
   on(ElectionsActions.markCurrentElection, (state, { election }) => {
     return {
       ...state,
@@ -61,13 +77,13 @@ export const reducer = createReducer(
   on(ElectionsActions.markCurrentPosition, (state, { position }) => {
     return {
       ...state,
-      currentPosition: position,
+      position: state.election.positions.find(pos => pos._id === position),
     };
   }),
   on(ElectionsActions.removePostsSuccess, (state, { data }) => {
     const updatedElections = state.lists.concat();
     updatedElections[
-      updatedElections.findIndex((elec) => elec._id === data._id)
+      updatedElections.findIndex(elec => elec._id === data._id)
     ] = data;
     return {
       ...state,
@@ -83,7 +99,7 @@ export const reducer = createReducer(
   on(ElectionsActions.updateElectionSuccess, (state, { election }) => {
     const updatedElections = state.lists.concat();
     updatedElections[
-      updatedElections.findIndex((elec) => elec._id === election._id)
+      updatedElections.findIndex(elec => elec._id === election._id)
     ] = election;
     return {
       ...state,
@@ -99,7 +115,7 @@ export const reducer = createReducer(
   on(ElectionsActions.addCandidateSuccess, (state, { election }) => {
     const updatedElections = state.lists.concat();
     updatedElections[
-      updatedElections.findIndex((elec) => elec._id === election._id)
+      updatedElections.findIndex(elec => elec._id === election._id)
     ] = election;
     return {
       ...state,
@@ -111,5 +127,5 @@ export const reducer = createReducer(
       ...state,
       error,
     };
-  })
+  }),
 );

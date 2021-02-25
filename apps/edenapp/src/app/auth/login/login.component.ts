@@ -1,7 +1,8 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { LoginUser } from '../../store/actions/auth.action';
 import { AuthService } from '../auth.service';
 
 @Component({
@@ -18,9 +19,10 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder,
     private auth: AuthService,
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private store: Store,
   ) {
-    if(this.auth.validateUser()) {
+    if (this.auth.token_payload) {
       this.router.navigate(['/']);
     }
   }
@@ -43,21 +45,7 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    this.auth.login(this.form.value).subscribe({
-      next: () => {
-        this.form.setErrors({
-          invalidCredentials: true
-        }, {emitEvent: true})
-        this.router.navigate([this.returnUrl || '/']);
-      },
-      error: (error: HttpErrorResponse) => {
-        if (error.status === 400 ||  error.status === 401) {
-          this.form.setErrors({
-            invalidCredentials: true
-          }, {emitEvent: true})
-        }
-      },
-    });
+    this.store.dispatch(LoginUser({ payload: this.form.value }));
   }
 
   get f() {

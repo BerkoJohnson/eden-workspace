@@ -1,19 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { shareReplay, tap } from 'rxjs/operators';
-import { LoginModel } from '../models/Login';
-import { ROLES } from '../models/roles.enum';
+import { shareReplay, tap, map } from 'rxjs/operators';
+import { AuthDto } from '../models/Login';
 import { AuthenticatedUser } from '../models/user';
 
-export interface LoginPayload {
-  accessToken: string;
-  expiresIn: number;
-}
-
 export interface Token extends AuthenticatedUser {
-  email: string;
-  role: ROLES;
   iat: number;
   exp: number;
 }
@@ -24,68 +16,60 @@ export interface Token extends AuthenticatedUser {
 export class AuthService {
   constructor(private http: HttpClient) {}
 
-  login(data: LoginModel): Observable<LoginPayload> {
-    return this.http.post<LoginPayload>('/api/auth/login', data).pipe(
-      tap((res) => this.setSession(res)),
-      shareReplay()
+  login(data: AuthDto): Observable<AuthenticatedUser> {
+    return this.http.post<{ token: string }>('/api/login', data).pipe(
+      tap(res => {
+        this.token = res.token;
+      }),
+      map(() => {
+        return this.token_payload;
+      }),
+      shareReplay(),
     );
   }
 
-  get user(): {email: string; role: ROLES} {
-    return this.validateUser();
+  whoami() {
+    // Send back token to validate on the server too.
+    return this.http.get<{ token: string }>('/api/whoami').pipe(
+      tap(res => {
+        this.token = res.token;
+      }),
+      map(() => {
+        return this.token_payload;
+      }),
+    );
+  }
+
+  get user(): AuthenticatedUser {
+    return this.token_payload;
   }
 
   get token(): string {
-    return localStorage.getItem('vta-access-token')
+    return localStorage.getItem('edenapp_token');
   }
 
-  setSession(authResult: LoginPayload) {
-    const { accessToken, expiresIn } = authResult;
-    const token_expires = this.timeNow() + expiresIn;
-
-    localStorage.setItem('vta-access-token', accessToken);
-    localStorage.setItem('vta-access-token-expires', `${token_expires}`);
-  }
-
-  /** Checks if token exists, if not return null. if it exists return {email: string, role: string} */
-  validateUser(): AuthenticatedUser {
-
-    // if token is null;
-    if (!this.decodeToken()) {
-      return null;
+  set token(result: string) {
+    if (result) {
+      localStorage.setItem('edenapp_token', result);
+    } else {
+      localStorage.clear();
     }
-
-    const decoded = this.decodeToken();
-
-    // check if token is expired
-    if (this.timeNow() > decoded.exp) {
-      return null;
-    }
-
-    // returns {email, role}
-    return {
-      email: decoded.email,
-      role: decoded.role,
-      firstName: decoded.firstName,
-      lastName: decoded.lastName
-    };
   }
 
-  private decodeToken(): Token | null {
+  // Decode the token,
+  // validate the token whether it has expired or not
+  // returns payload as Token or null
+  get token_payload(): Token {
     if (!this.token) {
       return null;
     }
-    return JSON.parse(window.atob(this.token.split('.')[1]));
-  }
+    const payload = JSON.parse(window.atob(this.token.split('.')[1])) as Token;
 
-  private timeNow() {
-    return Math.floor(Date.now() / 1000);
+    return payload.exp > Math.floor(Date.now() / 1000) ? payload : null;
   }
-
 
   logout(): Observable<boolean> {
-    localStorage.removeItem('vta-access-token');
-    localStorage.removeItem('vta-access-token-expires');
+    this.token = null;
 
     return of(true);
   }

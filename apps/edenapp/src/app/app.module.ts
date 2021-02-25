@@ -14,13 +14,7 @@ import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { MyProfileComponent } from './my-profile/my-profile.component';
 import { LoginGuard } from './auth/login.guard';
 import { CantAccessPageComponent } from './cant-access-page/cant-access-page.component';
-import { EffectsModule } from '@ngrx/effects';
-import { StoreRouterConnectingModule } from '@ngrx/router-store';
-import { StoreModule } from '@ngrx/store';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { reducers, metaReducers } from './store';
-import { CustomSerializer } from './store/custom-serializer';
-import { RouterEffects } from './store/router.effectst';
+import { AppStoreModule } from './store/app-store.module';
 
 @NgModule({
   declarations: [
@@ -37,20 +31,7 @@ import { RouterEffects } from './store/router.effectst';
     AuthModule,
     HttpClientModule,
     SharedModule,
-    StoreModule.forRoot(reducers, {
-      metaReducers,
-      runtimeChecks: {
-        strictStateSerializability: true,
-        strictActionSerializability: true,
-        strictActionWithinNgZone: true,
-        strictActionTypeUniqueness: true,
-      },
-    }),
-    StoreRouterConnectingModule.forRoot(),
-    StoreDevtoolsModule.instrument({
-      name: 'EdenVote',
-    }),
-    EffectsModule.forRoot([RouterEffects]),
+    AppStoreModule,
   ],
   providers: [
     LoginGuard,

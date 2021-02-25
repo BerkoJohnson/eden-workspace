@@ -1,4 +1,3 @@
-import { IsString, IsEmail, Matches, IsIn } from 'class-validator';
 import { ROLES } from './roles.enum';
 
 export interface IUser {
@@ -17,7 +16,6 @@ export interface AuthenticatedUser {
   email: string;
   role: ROLES;
 }
-
 
 export class CreateUserDto {
   // @IsString()

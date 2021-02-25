@@ -21,9 +21,8 @@
           formControlName="firstName"
           [ngClass]="{
             'is-invalid':
-              candGroup.get('firstName').invalid &&
-              (candGroup.get('firstName').dirty ||
-                candGroup.get('firstName').touched)
+              form.get('firstName').invalid &&
+              (form.get('firstName').dirty || form.get('firstName').touched)
           }"
         />
       </div>
@@ -37,9 +36,8 @@
           formControlName="lastName"
           [ngClass]="{
             'is-invalid':
-              candGroup.get('lastName').invalid &&
-              (candGroup.get('lastName').dirty ||
-                candGroup.get('lastName').touched)
+              form.get('lastName').invalid &&
+              (form.get('lastName').dirty || form.get('lastName').touched)
           }"
         />
       </div>
@@ -54,8 +52,8 @@
           formControlName="dob"
           [ngClass]="{
             'is-invalid':
-              candGroup.get('dob').invalid &&
-              (candGroup.get('dob').dirty || candGroup.get('dob').touched)
+              form.get('dob').invalid &&
+              (form.get('dob').dirty || form.get('dob').touched)
           }"
         />
       </div>
@@ -81,9 +79,8 @@
           formControlName="nickname"
           [ngClass]="{
             'is-invalid':
-              candGroup.get('nickname').invalid &&
-              (candGroup.get('nickname').dirty ||
-                candGroup.get('nickname').touched)
+              form.get('nickname').invalid &&
+              (form.get('nickname').dirty || form.get('nickname').touched)
           }"
         />
       </div>

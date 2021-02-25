@@ -10,39 +10,53 @@
     </button>
   </div>
   <div class="card-body">
-    <h6 *ngIf="subjectArray.controls.length === 0">Click Add to add a subject</h6>
+    <h6 *ngIf="subjectArray.controls.length === 0">
+      Click Add to add a subject
+    </h6>
     <ng-container
       *ngFor="let subjectGroup of subjectArray.controls; let i = index"
       formArrayName="subjects"
     >
-      <div [formGroup]="subjectGroup">
-          <div class="input-group mb-1">
-            <input
-              type="text"
-              name="subject_title"
-              id="subject_title"
-              formControlName="title"
-              placeholder="Subject's Title"
-              class="form-control w-50"
-            />
-            <select
-              name="subject_type"
-              id="subject_type"
-              formControlName="type"
-              class="form-select"
-            >
-              <option selected>Select Type</option>
-              <option [value]="sType" *ngFor="let sType of subjectTypes">
-                {{ sType }}
-              </option>
-            </select>
+      <div formGroupName="subjectGroup">
+        <div class="input-group mb-1">
+          <input
+            type="text"
+            name="subject_title"
+            id="subject_title"
+            formControlName="title"
+            placeholder="Subject's Title"
+            class="form-control w-50"
+          />
+          <select
+            name="subject_type"
+            id="subject_type"
+            formControlName="type"
+            class="form-select"
+          >
+            <option selected>Select Type</option>
+            <option [value]="sType" *ngFor="let sType of subjectTypes">
+              {{ sType }}
+            </option>
+          </select>
 
-            <button class="btn btn-sm btn-danger" type="button" (click)="removeSubject(i)">x</button>
-          </div>
+          <button
+            class="btn btn-sm btn-danger"
+            type="button"
+            (click)="removeSubject(i)"
+          >
+            x
+          </button>
+        </div>
       </div>
     </ng-container>
   </div>
   <div class="card-footer">
-    <button type="submit" [disabled]="form.invalid" class="btn btn-sm btn-success">Save</button>
+    <button
+      type="submit"
+      [disabled]="form.invalid"
+      class="btn btn-sm btn-success"
+    >
+      Save
+    </button>
   </div>
 </form>

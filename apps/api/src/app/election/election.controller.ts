@@ -19,13 +19,14 @@ export class ElectionController {
   @Get()
   @UseGuards(JwtGuard)
   async getElections() {
+    // console.log(email);
     return this.electionService.getElections();
   }
 
   @Post()
   @UseGuards(JwtGuard)
   async createElection(
-    @Body(ValidationPipe) createElectionDto: CreateElectionDto
+    @Body(ValidationPipe) createElectionDto: CreateElectionDto,
   ) {
     return this.electionService.create(createElectionDto);
   }
@@ -34,16 +35,14 @@ export class ElectionController {
   @UseGuards(JwtGuard)
   async updateElection(
     @Param('id') id: string,
-    @Body(ValidationPipe) createElectionDto: CreateElectionDto
+    @Body(ValidationPipe) createElectionDto: CreateElectionDto,
   ) {
     return this.electionService.update(createElectionDto, id);
   }
 
   @Get(':id')
   @UseGuards(JwtGuard)
-  async get(
-    @Param('id') id: string
-  ) {
+  async get(@Param('id') id: string) {
     return this.electionService.getElection(id);
   }
 
@@ -51,7 +50,7 @@ export class ElectionController {
   @UseGuards(JwtGuard)
   async removePosition(
     @Param('electionID') electionID: string,
-    @Body(ValidationPipe) positions: string[]
+    @Body(ValidationPipe) positions: string[],
   ) {
     return this.electionService.removePosition(electionID, positions);
   }
@@ -60,10 +59,8 @@ export class ElectionController {
   @UseGuards(JwtGuard)
   async addCandidates(
     @Param('electionID') electionID: string,
-    @Body(ValidationPipe) createCandidatesDto: CreateCandidateDto
+    @Body(ValidationPipe) createCandidatesDto: CreateCandidateDto,
   ) {
     return this.electionService.addCandidates(electionID, createCandidatesDto);
   }
-
-
 }

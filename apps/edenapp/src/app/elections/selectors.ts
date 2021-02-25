@@ -16,6 +16,16 @@ export const selectCurrentElectionID = createSelector(
   state => state.currentElection,
 );
 
+export const selectElection = createSelector(
+  selectElectionState,
+  state => state.election,
+);
+
+export const selectPosition = createSelector(
+  selectElectionState,
+  state => state.position,
+);
+
 export const selectMarkedElection = createSelector(
   selectElectionState,
   selectCurrentElectionID,

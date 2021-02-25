@@ -4,11 +4,11 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { IElection } from '../Election';
 import {
-  markCurrentElection,
+  getElection,
   markCurrentPosition,
   removePosts,
 } from '../elections.actions';
-import { selectMarkedElection } from '../selectors';
+import { selectElection } from '../selectors';
 
 @Component({
   selector: 'evc-view',
@@ -16,20 +16,20 @@ import { selectMarkedElection } from '../selectors';
   styleUrls: ['./view.component.scss'],
 })
 export class ViewElectionComponent implements OnInit {
-  // markedPost = '';
-  selectedElection$: Observable<IElection>;
+  elections$: Observable<IElection[]>;
+  election$: Observable<IElection>;
+
   markedPositions: string[] = [];
   constructor(private store: Store, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe(params => {
-      this.store.dispatch(markCurrentElection({ election: params.get('id') }));
-    });
-    setTimeout(
-      () => (
-        (this.selectedElection$ = this.store.select(selectMarkedElection)), 2000
+    this.route.paramMap.subscribe(params =>
+      this.store.dispatch(
+        getElection({ electionId: params.get('electionId') }),
       ),
     );
+
+    this.election$ = this.store.select(selectElection);
   }
 
   markPost(marked: boolean, postId: string) {

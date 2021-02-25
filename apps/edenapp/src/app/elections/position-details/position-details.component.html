@@ -30,7 +30,8 @@
               class="form-check-input"
               type="checkbox"
               [id]="cand._id"
-              (change)="markCandidates($event.target.checked, cand._id)"
+              #input
+              (change)="markCandidates(input.checked, cand._id)"
             />
             <label class="form-check-label" [for]="cand._id">
               {{ cand?.lastName }},
@@ -51,160 +52,15 @@
           </div>
         </li>
       </ul>
-
-      <ng-container
-        formArrayName="candidates"
-        *ngFor="let candGroup of candidatesArray.controls; let i = index"
-      >
-        <div [formGroup]="candGroup">
-          <div class="card mb-3">
-            <div
-              class="card-header d-flex justify-content-between align-items-center"
-            >
-              <b
-                >Candidate: {{ last?.value
-                }}{{ first.value !== '' && last.value !== '' ? ',' : ''
-                }}{{ first?.value }}</b
-              >
-              <button
-                type="button"
-                [title]="'Remove candidate ' + (i + 1)"
-                class="btn btn-sm btn-danger"
-                (click)="removeCandidate(i)"
-              >
-                <i class="bi-trash"></i>
-              </button>
-            </div>
-            <div class="card-body">
-              <div class="row g-2 mb-2">
-                <div class="col-sm-12">
-                  <input
-                    type="text"
-                    class="form-control form-control-sm"
-                    name="firstName"
-                    id="firstName"
-                    #first
-                    placeholder="First Name"
-                    formControlName="firstName"
-                    [ngClass]="{
-                      'is-invalid':
-                        candGroup.get('firstName').invalid &&
-                        (candGroup.get('firstName').dirty ||
-                          candGroup.get('firstName').touched)
-                    }"
-                  />
-                </div>
-                <div class="col-sm-12">
-                  <input
-                    type="text"
-                    class="form-control form-control-sm"
-                    name="lastName"
-                    #last
-                    placeholder="Last Name"
-                    formControlName="lastName"
-                    [ngClass]="{
-                      'is-invalid':
-                        candGroup.get('lastName').invalid &&
-                        (candGroup.get('lastName').dirty ||
-                          candGroup.get('lastName').touched)
-                    }"
-                  />
-                </div>
-              </div>
-              <div class="row g-2 mb-2">
-                <div class="col-sm-7">
-                  <input
-                    type="date"
-                    class="form-control-sm form-control"
-                    name="dob"
-                    placeholder="Date of Birth"
-                    formControlName="dob"
-                    [ngClass]="{
-                      'is-invalid':
-                        candGroup.get('dob').invalid &&
-                        (candGroup.get('dob').dirty ||
-                          candGroup.get('dob').touched)
-                    }"
-                  />
-                </div>
-                <div class="col-sm-5">
-                  <select
-                    class="form-select form-select-sm"
-                    aria-label="gender"
-                    formControlName="gender"
-                  >
-                    <option selected disabled>Gender</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                  </select>
-                </div>
-              </div>
-              <div class="row g-2 mb-2">
-                <div class="col-sm-7">
-                  <input
-                    type="type"
-                    class="form-control-sm form-control"
-                    name="nickname"
-                    placeholder="Nickname"
-                    formControlName="nickname"
-                    [ngClass]="{
-                      'is-invalid':
-                        candGroup.get('nickname').invalid &&
-                        (candGroup.get('nickname').dirty ||
-                          candGroup.get('nickname').touched)
-                    }"
-                  />
-                </div>
-                <div class="col-sm-5">
-                  <select
-                    class="form-select form-select-sm"
-                    aria-label="rooms"
-                    formControlName="room"
-                  >
-                    <option selected disabled>Room</option>
-                    <option value="2A1">2A1</option>
-                    <option value="2A2">2A2</option>
-                    <option value="2A3">2A3</option>
-                    <option value="2B1">2B1</option>
-                    <option value="2B2">2B2</option>
-                    <option value="2C1">2C1</option>
-                  </select>
-                </div>
-              </div>
-              <div class="row g-2 mb-2">
-                <div class="col-sm-12">
-                  <textarea
-                    class="form-control form-control-sm"
-                    name="displayMessage"
-                    formControlName="displayMessage"
-                    rows="2"
-                    placeholder="Add a small message to show voters"
-                  ></textarea>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </ng-container>
-
-      <button
-        class="btn btn-sm btn-danger mt-2"
-        type="button"
-        *ngIf="markedCandidates.length >= 1"
-        (click)="removeMarkedCandidates(pos._id)"
-      >
-        <span><i class="bi-trash"></i> Remove Positions</span>
-      </button>
     </div>
   </div>
   <div class="card-footer">
-    <button
+    <a
       class="btn btn-sm btn-outline-primary"
       routerLink="../candidates"
       type="button"
-      (click)="setCurrentPostion()"
     >
       <span>+New Candidate</span>
-    </button>
+    </a>
   </div>
 </form>

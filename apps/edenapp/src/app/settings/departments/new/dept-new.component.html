@@ -45,18 +45,22 @@
     <button type="button" class="btn btn-secondary mb-1" (click)="addSubject()">
       + Assign Subject
     </button>
-    <ng-container *ngFor="let sub of subjectArray.controls; let i = index">
+    <ng-container
+      *ngFor="let sub of subjectArray.controls; let i = index"
+      formArrayName="subjects"
+    >
       <div class="input-group mt-2">
         <span class="input-group-text">{{ i + 1 }}</span>
         <select
           class="form-select form-select-sm"
           [id]="'subject' + i"
-          [formControl]="sub"
+          [formControlName]="i"
           [ngClass]="{
             'is-invalid':
               submitted &&
-              sub.invalid &&
-              (sub.get('subject').dirty || sub.get('subject').touched)
+              form.get(['subjects', i, 'subject']).invalid &&
+              (form.get(['subjects', i, 'subject']).get('subject').dirty ||
+                form.get(['subjects', i, 'subject']).get('subject').touched)
           }"
         >
           <option value="" selected>Select Subject</option>

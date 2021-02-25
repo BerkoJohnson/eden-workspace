@@ -1,12 +1,10 @@
 import {
   BadRequestException,
-  HttpStatus,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserDocument } from '../user/user.schema';
-
 import { UserService } from '../user/user.service';
 import { environment } from '../../environments/environment';
 
@@ -14,13 +12,30 @@ import { environment } from '../../environments/environment';
 export class AuthService {
   constructor(
     private userService: UserService,
-    private jwtService: JwtService
+    private jwtService: JwtService,
   ) {}
+
+  private tokenize(user: UserDocument, secret: string, timeLimit: string) {
+    console.log(secret, timeLimit);
+    const accessToken = this.jwtService.sign(
+      {
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        role: user.role,
+      },
+      {
+        expiresIn: timeLimit,
+        secret: secret,
+      },
+    );
+    return { token: accessToken };
+  }
 
   async login(data: {
     email: string;
     password: string;
-  }): Promise<{ accessToken: string; expiresIn: number }> {
+  }): Promise<{ token: string }> {
     const { email, password } = data;
 
     const found = await this.userService.findByEmail(email);
@@ -35,14 +50,23 @@ export class AuthService {
       throw new UnauthorizedException('Incorrect email or password');
     } else {
       // return jwt token to front-end
-
-      const accessToken = await this.jwtService.sign({
-        firstName: found.firstName,
-        lastName: found.lastName,
-        email: found.email,
-        role: found.role,
-      });
-      return { accessToken, expiresIn: environment.expires_in };
+      return this.tokenize(
+        found,
+        environment.jwt_secret,
+        environment.expires_in,
+      );
     }
+  }
+
+  async whoami(email: string) {
+    const found = await this.userService.findByEmail(email);
+
+    if (!found) {
+      throw new BadRequestException('Invalid user credentials');
+    }
+
+    console.log(found);
+    // return jwt token to front-end
+    return this.tokenize(found, environment.jwt_secret, environment.expires_in);
   }
 }

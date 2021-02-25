@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { Elections } from './Election';
-import { loadElections, markCurrentElection } from './elections.actions';
+import { loadElections } from './elections.actions';
 import { selectCurrentElectionID, selectElections } from './selectors';
 
 @Component({
@@ -22,10 +22,5 @@ export class ElectionsComponent implements OnInit {
     this.elections$ = this.store.select(selectElections);
 
     this.selectedElection$ = this.store.select(selectCurrentElectionID);
-
-  }
-
-  selected(value: string) {
-    this.store.dispatch(markCurrentElection({ election: value }));
   }
 }

@@ -10,24 +10,17 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "lib": [
-      "es2017",
-      "dom"
-    ],
+    "lib": ["es2017", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@eden-workspace/api-interfaces": [
-        "libs/api-interfaces/src/index.ts"
-      ],
-      "@eden-workspace/shared": [
-        "libs/shared/src/index.ts"
-      ]
+      "@eden-workspace/api-interfaces": ["libs/api-interfaces/src/index.ts"],
+      "@eden-workspace/shared": ["libs/shared/src/index.ts"]
     }
   },
-  "exclude": [
-    "node_modules",
-    "tmp"
-  ]
+  "angularCompilerOptions": {
+    "strictTemplates": true
+  },
+  "exclude": ["node_modules", "tmp"]
 }

@@ -7,14 +7,12 @@ import {
   mergeMap,
   tap,
   switchMap,
-  filter,
 } from 'rxjs/operators';
 import { of } from 'rxjs';
 
 import * as ElectionActions from './elections.actions';
 import { ElectionsService } from './elections.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { RouterNavigatedAction, ROUTER_NAVIGATION } from '@ngrx/router-store';
 
 @Injectable()
 export class ElectionEffects {
@@ -23,12 +21,12 @@ export class ElectionEffects {
       ofType(ElectionActions.loadElections),
       concatMap(() =>
         this.electionService.getElections().pipe(
-          map((data) => ElectionActions.loadElectionsSuccess({ data })),
-          catchError((error) =>
-            of(ElectionActions.loadElectionsFailure({ error }))
-          )
-        )
-      )
+          map(data => ElectionActions.loadElectionsSuccess({ data })),
+          catchError(error =>
+            of(ElectionActions.loadElectionsFailure({ error })),
+          ),
+        ),
+      ),
     );
   });
 
@@ -37,16 +35,16 @@ export class ElectionEffects {
       ofType(ElectionActions.CreateNewElection),
       mergeMap(({ election }) =>
         this.electionService.createElection(election).pipe(
-          map((data) =>
-            ElectionActions.CreateNewElectionSuccess({ election: data })
+          map(data =>
+            ElectionActions.CreateNewElectionSuccess({ election: data }),
           ),
-          catchError((error) =>
-            of(ElectionActions.CreateNewElectionFailure({ error }))
+          catchError(error =>
+            of(ElectionActions.CreateNewElectionFailure({ error })),
           ),
-          tap(() => this.router.navigate(['elections/view']))
-        )
-      )
-    )
+          tap(() => this.router.navigate(['elections/view'])),
+        ),
+      ),
+    ),
   );
 
   removePosts$ = createEffect(() => {
@@ -54,12 +52,12 @@ export class ElectionEffects {
       ofType(ElectionActions.removePosts),
       mergeMap(({ electionID, positions }) =>
         this.electionService.removePositions(electionID, positions).pipe(
-          map((data) => ElectionActions.removePostsSuccess({ data })),
-          catchError((error) =>
-            of(ElectionActions.removePostsFailure({ error }))
-          )
-        )
-      )
+          map(data => ElectionActions.removePostsSuccess({ data })),
+          catchError(error =>
+            of(ElectionActions.removePostsFailure({ error })),
+          ),
+        ),
+      ),
       // tap(() => this.router.navigate(['/elections/view']))
     );
   });
@@ -68,15 +66,15 @@ export class ElectionEffects {
       ofType(ElectionActions.updateElection),
       mergeMap(({ update, electionID }) =>
         this.electionService.update(update, electionID).pipe(
-          map((data) =>
-            ElectionActions.updateElectionSuccess({ election: data })
+          map(data =>
+            ElectionActions.updateElectionSuccess({ election: data }),
           ),
-          catchError((error) =>
-            of(ElectionActions.updateElectionFailure({ error }))
-          )
-        )
+          catchError(error =>
+            of(ElectionActions.updateElectionFailure({ error })),
+          ),
+        ),
       ),
-      tap(() => this.router.navigate(['/elections/view']))
+      tap(() => this.router.navigate(['/elections/view'])),
     );
   });
 
@@ -86,29 +84,30 @@ export class ElectionEffects {
       switchMap(({ candidates, electionID }) =>
         this.electionService
           .addCandidates(candidates, electionID)
-          .pipe(map(() => ElectionActions.loadElections()))
-      )
+          .pipe(map(() => ElectionActions.loadElections())),
+      ),
       // tap(() => this.router.navigate(['../view'], {relativeTo: this.activatedRoute}))
-    )
+    ),
   );
 
-  // setCurrentElection$ = createEffect(() =>
-  //   this.actions$.pipe(
-  //     ofType(ROUTER_NAVIGATION),
-  //     filter((r: RouterNavigatedAction) => r.payload.routerState.url.startsWith('/elections'),
-  //     map((r: RouterNavigatedAction) => r.payload.routerState['params']['id']),
-  //     switchMap((id) => {
-  //       return this.electionService.getElection(id).pipe(
-  //         map(el => ElectionActions.markCurrentElection({ election: el }))
-  //       );
-  //     })
-  //   )
-  // ));
+  getElection$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ElectionActions.getElection),
+      switchMap(({ electionId }) =>
+        this.electionService.getElection(electionId).pipe(
+          map(data => ElectionActions.getElectionSuccess({ election: data })),
+          catchError(error =>
+            of(ElectionActions.getElectionFailure({ error })),
+          ),
+        ),
+      ),
+    ),
+  );
 
   constructor(
     private actions$: Actions,
     private electionService: ElectionsService,
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
   ) {}
 }

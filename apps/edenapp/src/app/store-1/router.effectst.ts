@@ -22,15 +22,5 @@ export const {
 
 @Injectable()
 export class RouterEffects {
-  setCurrentElection$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(ROUTER_NAVIGATED),
-      switchMap(() => this.store.select(selectRouteParam('electionId') as any)),
-      map((electionId: string) =>
-        markCurrentElection({ election: electionId }),
-      ),
-    ),
-  );
-
   constructor(private actions$: Actions, private store: Store) {}
 }

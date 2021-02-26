@@ -16,7 +16,6 @@ export class AuthService {
   ) {}
 
   private tokenize(user: UserDocument, secret: string, timeLimit: string) {
-    console.log(secret, timeLimit);
     const accessToken = this.jwtService.sign(
       {
         firstName: user.firstName,
@@ -64,8 +63,6 @@ export class AuthService {
     if (!found) {
       throw new BadRequestException('Invalid user credentials');
     }
-
-    console.log(found);
     // return jwt token to front-end
     return this.tokenize(found, environment.jwt_secret, environment.expires_in);
   }

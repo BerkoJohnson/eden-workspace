@@ -2,24 +2,20 @@ import { createReducer, on } from '@ngrx/store';
 import { Elections, IElection, IPosition } from './Election';
 import * as ElectionsActions from './elections.actions';
 
-export const electionsFeatureKey = 'elections';
+export const electionsFeatureKey = 'electionsState';
 
 export interface State {
   lists: Elections;
-  currentElection: string;
-  currentPosition: string;
-  election: IElection;
   position: IPosition;
+  election: IElection;
   listLoaded: boolean;
   error: any;
 }
 
 export const initialState: State = {
   lists: [],
-  currentElection: null,
-  currentPosition: null,
-  election: null,
   position: null,
+  election: null,
   listLoaded: false,
   error: null,
 };
@@ -34,14 +30,6 @@ export const reducer = createReducer(
       lists: [...state.lists, election],
     };
   }),
-  on(ElectionsActions.CreateNewElectionFailure, (state, { error }) => {
-    return {
-      ...state,
-      error: error,
-      currentElection: null,
-      currentPosition: null,
-    };
-  }),
   on(ElectionsActions.loadElectionsSuccess, (state, { data }) => {
     return {
       ...state,
@@ -49,35 +37,10 @@ export const reducer = createReducer(
       listLoaded: true,
     };
   }),
-  on(ElectionsActions.loadElectionsFailure, (state, { error }) => {
-    return {
-      ...state,
-      listLoaded: false,
-      error,
-    };
-  }),
   on(ElectionsActions.getElectionSuccess, (state, { election }) => {
     return {
       ...state,
       election,
-    };
-  }),
-  on(ElectionsActions.getElectionFailure, (state, { error }) => {
-    return {
-      ...state,
-      error,
-    };
-  }),
-  on(ElectionsActions.markCurrentElection, (state, { election }) => {
-    return {
-      ...state,
-      currentElection: election,
-    };
-  }),
-  on(ElectionsActions.markCurrentPosition, (state, { position }) => {
-    return {
-      ...state,
-      position: state.election.positions.find(pos => pos._id === position),
     };
   }),
   on(ElectionsActions.removePostsSuccess, (state, { data }) => {
@@ -90,12 +53,6 @@ export const reducer = createReducer(
       lists: updatedElections,
     };
   }),
-  on(ElectionsActions.removePostsFailure, (state, { error }) => {
-    return {
-      ...state,
-      error,
-    };
-  }),
   on(ElectionsActions.updateElectionSuccess, (state, { election }) => {
     const updatedElections = state.lists.concat();
     updatedElections[
@@ -104,12 +61,6 @@ export const reducer = createReducer(
     return {
       ...state,
       lists: updatedElections,
-    };
-  }),
-  on(ElectionsActions.updateElectionFailure, (state, { error }) => {
-    return {
-      ...state,
-      error,
     };
   }),
   on(ElectionsActions.addCandidateSuccess, (state, { election }) => {
@@ -122,10 +73,10 @@ export const reducer = createReducer(
       lists: updatedElections,
     };
   }),
-  on(ElectionsActions.addCandidateFailure, (state, { error }) => {
+  on(ElectionsActions.getPositionSuccess, (state, { position }) => {
     return {
       ...state,
-      error,
+      position,
     };
   }),
 );

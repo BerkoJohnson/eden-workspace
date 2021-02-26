@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { Positions } from '../Election';
 import { addCandidate } from '../elections.actions';
-import { selectCurrentElectionID, selectElectionPositions } from '../selectors';
+import { selectElectionPositions } from '../selectors';
 
 @Component({
   selector: 'evc-candidates',
@@ -20,9 +20,6 @@ export class CandidatesComponent implements OnInit {
 
   ngOnInit(): void {
     this.positions$ = this.store.select(selectElectionPositions);
-    this.store
-      .select(selectCurrentElectionID)
-      .subscribe(obs => (this.electionID = obs));
   }
 
   addCandidateGroup() {

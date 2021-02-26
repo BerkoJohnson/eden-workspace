@@ -11,45 +11,23 @@ export const selectElections = createSelector(
   state => state.lists,
 );
 
-export const selectCurrentElectionID = createSelector(
-  selectElectionState,
-  state => state.currentElection,
-);
-
 export const selectElection = createSelector(
   selectElectionState,
   state => state.election,
 );
+
+// export const selectPosition = createSelector(
+//   selectElectionState,
+//   state => state.position,
+// );
 
 export const selectPosition = createSelector(
   selectElectionState,
   state => state.position,
 );
 
-export const selectMarkedElection = createSelector(
-  selectElectionState,
-  selectCurrentElectionID,
-  (state, id) => {
-    return state.lists.find(election => election._id === id);
-  },
-);
-
-export const selectCurrentPositionID = createSelector(
-  selectElectionState,
-  state => state.currentPosition,
-);
-
-export const selectMarkedPosition = createSelector(
-  selectElectionState,
-  selectMarkedElection,
-  selectCurrentPositionID,
-  (state, election, posId) => {
-    return election.positions.find(pos => pos._id === posId);
-  },
-);
-
 export const selectElectionPositions = createSelector(
   selectElectionState,
-  selectMarkedElection,
+  selectElection,
   (state, markedElection) => markedElection.positions,
 );

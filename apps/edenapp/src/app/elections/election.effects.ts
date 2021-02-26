@@ -13,6 +13,7 @@ import { of } from 'rxjs';
 import * as ElectionActions from './elections.actions';
 import { ElectionsService } from './elections.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AddError } from '../store/actions/error.actions';
 
 @Injectable()
 export class ElectionEffects {
@@ -53,9 +54,7 @@ export class ElectionEffects {
       mergeMap(({ electionID, positions }) =>
         this.electionService.removePositions(electionID, positions).pipe(
           map(data => ElectionActions.removePostsSuccess({ data })),
-          catchError(error =>
-            of(ElectionActions.removePostsFailure({ error })),
-          ),
+          catchError(error => of(AddError({ error }))),
         ),
       ),
       // tap(() => this.router.navigate(['/elections/view']))
@@ -69,9 +68,7 @@ export class ElectionEffects {
           map(data =>
             ElectionActions.updateElectionSuccess({ election: data }),
           ),
-          catchError(error =>
-            of(ElectionActions.updateElectionFailure({ error })),
-          ),
+          catchError(error => of(AddError({ error }))),
         ),
       ),
       tap(() => this.router.navigate(['/elections/view'])),
@@ -96,9 +93,19 @@ export class ElectionEffects {
       switchMap(({ electionId }) =>
         this.electionService.getElection(electionId).pipe(
           map(data => ElectionActions.getElectionSuccess({ election: data })),
-          catchError(error =>
-            of(ElectionActions.getElectionFailure({ error })),
-          ),
+          catchError(error => of(AddError({ error }))),
+        ),
+      ),
+    ),
+  );
+
+  getPosition$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ElectionActions.getPosition),
+      switchMap(({ electionId, positionId }) =>
+        this.electionService.getPosition(electionId, positionId).pipe(
+          map(data => ElectionActions.getPositionSuccess({ position: data })),
+          catchError(error => of(AddError({ error }))),
         ),
       ),
     ),

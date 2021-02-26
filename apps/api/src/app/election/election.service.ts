@@ -18,7 +18,7 @@ export class ElectionService {
     @InjectModel(Position.name)
     private positionModel: Model<PositionDocument>,
     @InjectModel(Candidate.name)
-    private candidateModel: Model<CandidateDocument>
+    private candidateModel: Model<CandidateDocument>,
   ) {}
 
   async create(electionDto: CreateElectionDto): Promise<ElectionDocument> {
@@ -62,7 +62,7 @@ export class ElectionService {
         {
           new: true,
           populate: 'positions candidates',
-        }
+        },
       );
     } catch (error) {
       console.error(error);
@@ -71,7 +71,7 @@ export class ElectionService {
 
   async update(
     electionDto: CreateElectionDto,
-    id: string
+    id: string,
   ): Promise<ElectionDocument> {
     const { title, academicYear, positions } = electionDto;
 
@@ -95,10 +95,10 @@ export class ElectionService {
       }
 
       // Get all positions with no ids, meaning not saved ones.
-      const positionsWithNoIds = positions.filter((pos) => !pos._id);
+      const positionsWithNoIds = positions.filter(pos => !pos._id);
 
       // Get all positions with ids
-      const positionsWithIds = positions.filter((pos) => pos._id);
+      const positionsWithIds = positions.filter(pos => pos._id);
 
       // Loop through the saved positions and update their documents
       for (let i = 0; i < positionsWithIds.length; i++) {
@@ -133,7 +133,7 @@ export class ElectionService {
           },
           {
             new: true,
-          }
+          },
         )
         .populate({
           path: 'positions candidates',
@@ -179,9 +179,9 @@ export class ElectionService {
             for (let i = 0; i < foundPosition.candidates.length; i++) {
               const canId = foundPosition.candidates[i];
               await this.candidateModel.findByIdAndUpdate(canId, {
-               $unset: {
-                 position: true
-               }
+                $unset: {
+                  position: true,
+                },
               });
             }
           }
@@ -213,7 +213,7 @@ export class ElectionService {
 
   async addCandidates(
     electionID: string,
-    createCandidatesDto: CreateCandidateDto
+    createCandidatesDto: CreateCandidateDto,
   ) {
     const { candidates } = createCandidatesDto;
     const candidateIDsArray: string[] = [];
@@ -230,7 +230,7 @@ export class ElectionService {
 
         if (foundCandidate) {
           throw new BadRequestException(
-            'This person is already a candidate in this election.'
+            'This person is already a candidate in this election.',
           );
         }
 
@@ -268,7 +268,7 @@ export class ElectionService {
           },
           {
             new: true,
-          }
+          },
         )
         .populate({
           path: 'positions candidates',
@@ -279,5 +279,11 @@ export class ElectionService {
     } catch (error) {
       console.log(error);
     }
+  }
+
+  async getPosition(positionId: string): Promise<PositionDocument> {
+    return this.positionModel.findById(positionId).populate({
+      path: 'candidates',
+    });
   }
 }

@@ -198,6 +198,57 @@
           }
         }
       }
+    },
+    "edenbackend": {
+      "root": "apps/edenbackend",
+      "sourceRoot": "apps/edenbackend/src",
+      "projectType": "application",
+      "prefix": "edenbackend",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/node:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/edenbackend",
+            "main": "apps/edenbackend/src/main.ts",
+            "tsConfig": "apps/edenbackend/tsconfig.app.json",
+            "assets": ["apps/edenbackend/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/edenbackend/src/environments/environment.ts",
+                  "with": "apps/edenbackend/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "edenbackend:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/edenbackend/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/edenbackend"],
+          "options": {
+            "jestConfig": "apps/edenbackend/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   },
   "cli": {

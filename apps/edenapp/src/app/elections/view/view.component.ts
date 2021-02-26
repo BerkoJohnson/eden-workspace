@@ -8,7 +8,7 @@ import {
   markCurrentPosition,
   removePosts,
 } from '../elections.actions';
-import { selectElection } from '../selectors';
+import { selectElection, selectElections } from '../selectors';
 
 @Component({
   selector: 'evc-view',
@@ -23,12 +23,12 @@ export class ViewElectionComponent implements OnInit {
   constructor(private store: Store, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe(params =>
-      this.store.dispatch(
-        getElection({ electionId: params.get('electionId') }),
-      ),
-    );
-
+    const id = this.route.snapshot.params['electionId'];
+    this.store.select(selectElections).subscribe(elecs => {
+      if (elecs.length > 0 && id) {
+        this.store.dispatch(getElection({ electionId: id }));
+      }
+    });
     this.election$ = this.store.select(selectElection);
   }
 

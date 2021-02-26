@@ -16,5 +16,6 @@ module.exports = {
     '<rootDir>/apps/eden-vote-cast',
     '<rootDir>/apps/edenpng',
     '<rootDir>/apps/ideas-api',
+    '<rootDir>/apps/edenbackend',
   ],
 };

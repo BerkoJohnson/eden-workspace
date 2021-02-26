@@ -8,7 +8,7 @@ import { IdeaModule } from './idea/idea.module';
 import { HttpErrorFilter } from './shared/http-err.filter';
 import { LoggingInterceptor } from './shared/logging.interceptor';
 import { UserModule } from './user/user.module';
-import {UserEntity, IdeaEntity, CommentEntity} from './entities';
+import { UserEntity, IdeaEntity, CommentEntity } from './entities';
 import { CommentModule } from './comment/comment.module';
 
 @Module({
@@ -23,11 +23,11 @@ import { CommentModule } from './comment/comment.module';
       port: 5432,
       synchronize: true,
       logging: true,
-      entities: [UserEntity, IdeaEntity,CommentEntity]
+      entities: [UserEntity, IdeaEntity, CommentEntity],
     }),
     UserModule,
     IdeaModule,
-    CommentModule
+    CommentModule,
   ],
   controllers: [AppController],
   providers: [

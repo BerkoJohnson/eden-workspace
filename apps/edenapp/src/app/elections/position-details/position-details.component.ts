@@ -4,8 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { ICandidate, IPosition } from '../Election';
-import { markCurrentPosition } from '../elections.actions';
-import { selectMarkedPosition, selectPosition } from '../selectors';
+import { getPosition } from '../elections.actions';
+import { selectElection, selectPosition } from '../selectors';
 
 @Component({
   selector: 'evc-position-details',
@@ -27,11 +27,15 @@ export class PositionDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe(params =>
-      this.store.dispatch(
-        markCurrentPosition({ position: params.get('positionId') }),
-      ),
-    );
+    const positionId = this.route.snapshot.params['positionId'];
+
+    this.store.select(selectElection).subscribe(election => {
+      if (election && positionId) {
+        this.store.dispatch(
+          getPosition({ positionId, electionId: election._id }),
+        );
+      }
+    });
 
     this.selectedPosition$ = this.store.select(selectPosition);
   }

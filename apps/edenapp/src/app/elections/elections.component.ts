@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { Elections } from './Election';
 import { loadElections } from './elections.actions';
-import { selectCurrentElectionID, selectElections } from './selectors';
+import { selectElections } from './selectors';
 
 @Component({
   selector: 'evc-elections',
@@ -18,9 +18,6 @@ export class ElectionsComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(loadElections());
-
     this.elections$ = this.store.select(selectElections);
-
-    this.selectedElection$ = this.store.select(selectCurrentElectionID);
   }
 }

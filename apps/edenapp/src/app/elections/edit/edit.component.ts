@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import {  FormBuilder, Validators, FormArray } from '@angular/forms';
+import { FormBuilder, Validators, FormArray } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { IElection } from '../Election';
 import { updateElection } from '../elections.actions';
-import { selectMarkedElection } from '../selectors';
+import { selectElection } from '../selectors';
 
 @Component({
   selector: 'evc-edit-election',
@@ -19,34 +19,26 @@ export class EditElectionComponent implements OnInit {
   alertSuccess = false;
   academicYearPattern: string | RegExp = /^202[1-9]{1}\/202[1-9]{1}/;
 
-  constructor(
-    private fb: FormBuilder,
-    private store: Store,
-    private router: Router
-  ) {}
+  constructor(private fb: FormBuilder, private store: Store) {}
 
   ngOnInit(): void {
-    this.store.select(selectMarkedElection).subscribe(
-      (election) => (this.selectedElection = election)
-    );
+    this.store.select(selectElection).subscribe(election => {
+      if (election !== null) {
+        this.form.patchValue({
+          title: election.title,
+          academicYear: election.academicYear,
+        });
 
-    if (!this.selectedElection) {
-      this.router.navigate(['elections']);
-      return;
-    }
-
-    this.form.patchValue({
-      title: this.selectedElection.title,
-      academicYear: this.selectedElection.academicYear,
+        for (let i = 0; i < election.positions.length; i++) {
+          this.addPosition(
+            election.positions[i]._id,
+            election.positions[i].pos_name,
+          );
+        }
+        this.form.updateValueAndValidity({ emitEvent: true });
+        this.selectedElection = election;
+      }
     });
-
-    for (let i = 0; i < this.selectedElection.positions.length; i++) {
-      this.addPosition(
-        this.selectedElection.positions[i]._id,
-        this.selectedElection.positions[i].pos_name
-      );
-    }
-    this.form.updateValueAndValidity({ emitEvent: true });
   }
 
   createForm() {
@@ -69,7 +61,12 @@ export class EditElectionComponent implements OnInit {
       return;
     }
 
-    this.store.dispatch(updateElection({update: this.form.value, electionID: this.selectedElection._id}))
+    this.store.dispatch(
+      updateElection({
+        update: this.form.value,
+        electionID: this.selectedElection._id,
+      }),
+    );
   }
 
   get f() {

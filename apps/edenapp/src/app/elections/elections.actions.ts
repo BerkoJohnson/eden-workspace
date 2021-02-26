@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { Candidates, Elections, IElection } from './Election';
+import { Candidates, Elections, IElection, IPosition } from './Election';
 
 export const loadElections = createAction('[Elections] Load Elections');
 
@@ -52,6 +52,14 @@ export const getElectionSuccess = createAction(
 export const getElectionFailure = createAction(
   '[Elections] Retrieve Election Failure',
   props<{ error: any }>(),
+);
+export const getPosition = createAction(
+  '[Elections] Retrieve Position',
+  props<{ positionId: string; electionId: string }>(),
+);
+export const getPositionSuccess = createAction(
+  '[Elections] Retrieve Position Success',
+  props<{ position: IPosition }>(),
 );
 
 export const markCurrentElection = createAction(

@@ -42,10 +42,15 @@ export class ElectionController {
 
   @Get(':id')
   @UseGuards(JwtGuard)
-  async get(@Param('id') id: string) {
+  async getElection(@Param('id') id: string) {
     return this.electionService.getElection(id);
   }
 
+  @Get(':electionID/positions/:positionId')
+  @UseGuards(JwtGuard)
+  async getPost(@Param('positionId') positionId: string) {
+    return this.electionService.getPosition(positionId);
+  }
   @Patch(':electionID/positions')
   @UseGuards(JwtGuard)
   async removePosition(

@@ -2,11 +2,11 @@ import {
   BeforeInsert,
   Column,
   CreateDateColumn,
-  Entity,
+  Entity, Index,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { ROLES } from './roles.enum';
+import { ROLES } from '../shared/roles.enum';
 
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
@@ -14,6 +14,7 @@ import * as jwt from 'jsonwebtoken';
 // config();
 
 @Entity('users')
+@Index(['email'], {unique:true})
 export class UserEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;

@@ -1,5 +1,5 @@
 import { IsNotEmpty } from 'class-validator';
-import { ROLES } from './roles.enum';
+import { ROLES } from '../shared/roles.enum';
 
 export class AuthDto {
   @IsNotEmpty()

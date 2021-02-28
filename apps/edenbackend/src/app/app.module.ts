@@ -1,3 +1,5 @@
+import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
+
 config();
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -5,11 +7,11 @@ import { config } from 'dotenv';
 
 import { AppController } from './app.controller';
 import { AuthModule } from './auth/auth.module';
-import { UserEntity } from './auth/user.entity';
-import { CandidateEntity } from './elections/candidate.entity';
-import { ElectionEntity } from './elections/election.entity';
 import { ElectionModule } from './elections/elections.module';
-import { PositionEntity } from './elections/position.entity';
+import { CandidateEntity, ElectionEntity, PositionEntity, UserEntity } from './entities';
+import { HttpErrorFilter } from './shared/http-error.filter';
+import { LoggingInterceptor } from './shared/logging.interceptor';
+import { RolesGuard } from './shared/roles.guard';
 
 @Module({
   imports: [
@@ -22,13 +24,26 @@ import { PositionEntity } from './elections/position.entity';
       port: +process.env.DB_PORT | 5432,
       synchronize: true,
       logging: true,
-      entities: [UserEntity, ElectionEntity, PositionEntity, CandidateEntity],
+      entities: [CandidateEntity, PositionEntity,ElectionEntity, UserEntity],
       // dropSchema: true,
     }),
     AuthModule,
     ElectionModule,
   ],
   controllers: [AppController],
-  providers: [],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    },
+    {
+      provide: APP_FILTER,
+      useClass: HttpErrorFilter
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: LoggingInterceptor
+    }
+  ],
 })
 export class AppModule {}

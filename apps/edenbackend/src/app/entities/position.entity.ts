@@ -1,7 +1,7 @@
 import {
   Column,
   CreateDateColumn,
-  Entity,
+  Entity, Index,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -11,6 +11,7 @@ import { CandidateEntity } from './candidate.entity';
 import { ElectionEntity } from './election.entity';
 
 @Entity('positions')
+@Index(['title', 'election'], {unique: true})
 export class PositionEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -19,7 +20,7 @@ export class PositionEntity {
   title: string;
 
   @ManyToOne(() => ElectionEntity, election => election.positions)
-  election: string;
+  election: ElectionEntity;
 
   @OneToMany(() => CandidateEntity, candidate => candidate.position)
   candidates: CandidateEntity[];

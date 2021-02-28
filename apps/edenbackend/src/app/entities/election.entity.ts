@@ -7,6 +7,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { PositionEntity } from './position.entity';
+import { CandidateEntity } from './candidate.entity';
 
 @Entity('elections')
 export class ElectionEntity {
@@ -21,6 +22,9 @@ export class ElectionEntity {
 
   @OneToMany(() => PositionEntity, position => position.election)
   positions: PositionEntity[];
+
+  @OneToMany(() => CandidateEntity, candidate => candidate.election)
+  candidates: CandidateEntity[];
 
   @CreateDateColumn()
   created: Date;

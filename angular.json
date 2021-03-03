@@ -249,6 +249,108 @@
           }
         }
       }
+    },
+    "eden-admin": {
+      "root": "apps/eden-admin",
+      "sourceRoot": "apps/eden-admin/src",
+      "projectType": "application",
+      "prefix": "eden-admin",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/node:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/eden-admin",
+            "main": "apps/eden-admin/src/main.ts",
+            "tsConfig": "apps/eden-admin/tsconfig.app.json",
+            "assets": ["apps/eden-admin/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/eden-admin/src/environments/environment.ts",
+                  "with": "apps/eden-admin/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "eden-admin:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/eden-admin/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/eden-admin"],
+          "options": {
+            "jestConfig": "apps/eden-admin/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "base-app": {
+      "root": "apps/base-app",
+      "sourceRoot": "apps/base-app/src",
+      "projectType": "application",
+      "prefix": "base-app",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/node:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/base-app",
+            "main": "apps/base-app/src/main.ts",
+            "tsConfig": "apps/base-app/tsconfig.app.json",
+            "assets": ["apps/base-app/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/base-app/src/environments/environment.ts",
+                  "with": "apps/base-app/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "base-app:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/base-app/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/base-app"],
+          "options": {
+            "jestConfig": "apps/base-app/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   },
   "cli": {

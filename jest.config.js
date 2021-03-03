@@ -17,5 +17,7 @@ module.exports = {
     '<rootDir>/apps/edenpng',
     '<rootDir>/apps/ideas-api',
     '<rootDir>/apps/edenbackend',
+    '<rootDir>/apps/eden-admin',
+    '<rootDir>/apps/base-app',
   ],
 };

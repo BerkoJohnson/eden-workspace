@@ -1,17 +1,35 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards, ValidationPipe } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+  UseGuards,
+  ValidationPipe,
+} from '@nestjs/common';
 import { ElectionsService } from './elections.service';
 import { JwtGuard } from '../shared/jwt.guard';
-import { CandidateDto, CandidateUpdateDto, ElectionDto, PositionDto, PositionUpdateDto } from '../dtos';
+import {
+  CandidateDto,
+  CandidateUpdateDto,
+  ElectionDto,
+  PositionDto,
+  PositionUpdateDto,
+} from '../dtos';
 import { Roles } from '../shared/roles.decorator';
 import { ROLES } from '../shared/roles.enum';
+import { User } from '../shared/user.decorator';
 
 @UseGuards(JwtGuard)
-@Roles(ROLES.ADMIN, ROLES.SUPERADMIN)
 @Controller('api')
+@Roles(ROLES.ADMIN, ROLES.SUPERADMIN)
 export class ElectionsController {
-
   @Get('elections')
-  getElections() {
+  getElections(@User() user: any) {
+    // console.log(user);
     return this.electionService.getElections();
   }
 
@@ -22,7 +40,7 @@ export class ElectionsController {
 
   @Post('elections')
   createElection(@Body(ValidationPipe) data: ElectionDto) {
-    return this.electionService.createElection(data)
+    return this.electionService.createElection(data);
   }
 
   @Post('positions')
@@ -30,9 +48,11 @@ export class ElectionsController {
     return this.electionService.createPosition(data);
   }
 
-
   @Patch('positions/:positionId')
-  updatePosition(@Param('positionId') positionId: string, @Body(ValidationPipe) data: PositionUpdateDto) {
+  updatePosition(
+    @Param('positionId') positionId: string,
+    @Body(ValidationPipe) data: PositionUpdateDto,
+  ) {
     return this.electionService.updatePost(positionId, data);
   }
 
@@ -47,9 +67,11 @@ export class ElectionsController {
     return this.electionService.createCandidate(data);
   }
 
-
   @Patch('candidates/:candidateId')
-  updateCandidate(@Param('candidateId') candidateId: string, @Body(ValidationPipe) data: CandidateUpdateDto) {
+  updateCandidate(
+    @Param('candidateId') candidateId: string,
+    @Body(ValidationPipe) data: CandidateUpdateDto,
+  ) {
     return this.electionService.updateCandidate(candidateId, data);
   }
 
@@ -58,17 +80,15 @@ export class ElectionsController {
     return this.electionService.removeCandidate(candidateId);
   }
 
-
   @Get('candidates')
   getAllCandidates(
     @Query('id') id: string,
     @Query('type') type: 'position' | 'election',
-    ) {
+  ) {
     return this.electionService.getAllCandidates({
-      [type]: id
+      [type]: id,
     });
   }
 
-  constructor(private electionService: ElectionsService) {
-  }
+  constructor(private electionService: ElectionsService) {}
 }

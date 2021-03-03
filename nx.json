@@ -37,6 +37,12 @@
     },
     "edenbackend": {
       "tags": []
+    },
+    "eden-admin": {
+      "tags": []
+    },
+    "base-app": {
+      "tags": []
     }
   }
 }

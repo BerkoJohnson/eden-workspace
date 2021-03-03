@@ -21,6 +21,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       throw new UnauthorizedException();
     }
 
-    return user.toResponseObj();
+    const res = user.toResponseObj();
+    console.log(res);
+    return res;
   }
 }
